@@ -12,7 +12,7 @@ namespace VersionStitcher
     using StitcherBoy.Project;
     using StitcherBoy.Weaving;
 
-    internal class VersionStitcher : SingleStitcher
+    public class VersionStitcher : SingleStitcher
     {
         private static readonly Regex VersionFormatEx = new Regex(@"\{[Vv]ersion\.(?<id>\w+)(\:(?<format>\w))?\}");
 
