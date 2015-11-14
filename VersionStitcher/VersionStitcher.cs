@@ -69,7 +69,7 @@ namespace VersionStitcher
                     throw new OperationCanceledException();
                 }
                 var format = m.Groups["format"].Value;
-                var property = information.GetType().GetProperty(id, BindingFlags.IgnoreCase | BindingFlags.Instance);
+                var property = information.GetType().GetProperty(id, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
                 var propertyValue = property?.GetValue(information);
                 if (propertyValue == null)
                     return "";

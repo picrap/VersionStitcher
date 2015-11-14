@@ -63,6 +63,7 @@
     <Compile Include="Information\BuildInformation.cs" />
     <Compile Include="Information\GitInformation.cs" />
     <Compile Include="Information\InformationProvider.cs" />
+    <Compile Include="LibGit\NativeBinariesRoot.cs" />
     <Compile Include="VersionStitcher.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +84,15 @@
       <Project>{8515A314-3563-465A-8303-FE26E04CFB13}</Project>
       <Name>StitcherBoy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="..\packages\LibGit2Sharp.0.21.0.176\lib\net40\NativeBinaries\amd64\git2-e0902fb.dll">
+      <Link>LibGit\amd64\git2-e0902fb.dll</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\packages\LibGit2Sharp.0.21.0.176\lib\net40\NativeBinaries\x86\git2-e0902fb.dll">
+      <Link>LibGit\x86\git2-e0902fb.dll</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
