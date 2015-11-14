@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TestApplication
 {
+    using System;
+
     internal static class Program
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine("Hi, I'm on {SC:commit}");
         }
     }
 }
