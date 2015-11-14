@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Information\BuildInformation.cs" />
+    <Compile Include="Information\GitInformation.cs" />
+    <Compile Include="Information\InformationProvider.cs" />
     <Compile Include="VersionStitcher.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
