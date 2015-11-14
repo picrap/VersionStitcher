@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskTestApplication
+﻿namespace TaskTestApplication
 {
+    using System;
+
     internal static class Program
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine("Hi, I'm on {Version.help} and {this} is not a {Version}");
+            Console.ReadKey();
         }
     }
 }

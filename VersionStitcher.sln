@@ -5,6 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionStitcher", "VersionStitcher\VersionStitcher.csproj", "{78DC845D-47B0-4473-A97B-B262324143C0}"
 	ProjectSection(ProjectDependencies) = postProject
+		{8515A314-3563-465A-8303-FE26E04CFB13} = {8515A314-3563-465A-8303-FE26E04CFB13}
 		{49A55764-14CE-4186-AF3E-DD2AB4FC50C4} = {49A55764-14CE-4186-AF3E-DD2AB4FC50C4}
 	EndProjectSection
 EndProject
@@ -16,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication", "Task
 	ProjectSection(ProjectDependencies) = postProject
 		{78DC845D-47B0-4473-A97B-B262324143C0} = {78DC845D-47B0-4473-A97B-B262324143C0}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{550F7632-5774-4D5F-A832-31BFE92B166A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +45,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49A55764-14CE-4186-AF3E-DD2AB4FC50C4} = {550F7632-5774-4D5F-A832-31BFE92B166A}
+		{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B} = {550F7632-5774-4D5F-A832-31BFE92B166A}
 	EndGlobalSection
 EndGlobal

@@ -45,6 +45,10 @@
     <AssemblyOriginatorKeyFile>Properties\VersionStitcher.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dnlib">
+      <HintPath>..\StitcherBoy\Libraries\dnlib.dll</HintPath>
+      <Aliases>dnlib</Aliases>
+    </Reference>
     <Reference Include="LibGit2Sharp, Version=0.21.0.176, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LibGit2Sharp.0.21.0.176\lib\net40\LibGit2Sharp.dll</HintPath>
       <Private>True</Private>
@@ -76,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StitcherBoy\StitcherBoy\StitcherBoy.csproj">
-      <Project>{8515a314-3563-465a-8303-fe26e04cfb13}</Project>
+      <Project>{8515A314-3563-465A-8303-FE26E04CFB13}</Project>
       <Name>StitcherBoy</Name>
     </ProjectReference>
   </ItemGroup>
