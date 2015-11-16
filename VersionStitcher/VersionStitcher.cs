@@ -5,7 +5,6 @@ namespace VersionStitcher
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using dnlib.DotNet;
     using dnlib.DotNet.Emit;
     using Information;
