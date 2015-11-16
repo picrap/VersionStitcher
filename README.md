@@ -1,5 +1,7 @@
 # VersionStitcher
-Injects repository (git only for now) information (such as changeset, branch...) in assembly after it is compiled.
+Injects repository (git only for now) information (such as changeset, branch...) in assembly after it is compiled.  
+NuGet... Coming soon.  
+Build status... Coming soon too (regarding the bill, you don't have the right to complain).  
 
 ## How it works
 
