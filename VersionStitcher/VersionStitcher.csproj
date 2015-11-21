@@ -79,6 +79,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\VersionStitcher.snk" />
+    <None Include="VersionStitcher.nuspec" />
     <None Include="VersionStitcher.targets">
       <SubType>Designer</SubType>
     </None>
