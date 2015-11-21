@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dnlib">
-      <HintPath>..\StitcherBoy\Libraries\dnlib.dll</HintPath>
+      <HintPath>..\Libraries\dnlib.dll</HintPath>
       <Aliases>dnlib</Aliases>
     </Reference>
     <Reference Include="LibGit2Sharp, Version=0.21.0.176, Culture=neutral, processorArchitecture=MSIL">
