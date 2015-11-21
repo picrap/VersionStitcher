@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication", "Task
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{550F7632-5774-4D5F-A832-31BFE92B166A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{8E6082FA-3163-482D-8E21-A60444251DBF}"
+	ProjectSection(SolutionItems) = preProject
+		Icon\VersionStitcher.ai = Icon\VersionStitcher.ai
+		Icon\VersionStitcher.png = Icon\VersionStitcher.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
