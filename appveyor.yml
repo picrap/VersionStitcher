@@ -23,7 +23,7 @@ build:
   verbosity: minimal
 
 artifacts:
-  - path: 'SignReferences\bin\$(configuration)\*.nupkg'
+  - path: 'VersionStitcher\bin\$(configuration)\*.nupkg'
 
 #deploy:
 #  provider: NuGet
