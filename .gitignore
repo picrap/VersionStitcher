@@ -196,3 +196,5 @@ FakesAssemblies/
 *.opt
 /VersionStitcher.exe
 /VersionStitcher.exe.task
+VersionStitcher/VersionStitcher.nuspec
+VersionStitcher/Properties/ProductInfo.cs

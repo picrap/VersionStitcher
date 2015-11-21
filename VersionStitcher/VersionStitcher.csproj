@@ -64,6 +64,11 @@
     <Compile Include="Information\GitInformation.cs" />
     <Compile Include="Information\InformationProvider.cs" />
     <Compile Include="LibGit\GitRepository.cs" />
+    <Compile Include="Properties\ProductInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductInfo.tt</DependentUpon>
+    </Compile>
     <Compile Include="VersionStitcher.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,10 +79,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\VersionStitcher.snk" />
-    <Content Include="VersionStitcher.tt">
+    <None Include="VersionStitcher.nuspec">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VersionStitcher.tt</DependentUpon>
+    </None>
+    <None Include="VersionStitcher.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VersionStitcher1.cs</LastGenOutput>
-    </Content>
+      <LastGenOutput>VersionStitcher.nuspec</LastGenOutput>
+    </None>
     <None Include="VersionStitcher.targets">
       <SubType>Designer</SubType>
     </None>
@@ -109,7 +119,22 @@
     <Error Condition="!Exists('..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\VersionStitcher.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)StitcherBoy.dll" "$(TargetDir)LibGit2Sharp.dll"</PostBuildEvent>
+    <PostBuildEvent>rem --- ILMerge ------------------------------------------------------------------------------
+
+"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\VersionStitcher.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)StitcherBoy.dll" "$(TargetDir)LibGit2Sharp.dll"
+
+rem --- NuGet pack ------------------------------------------------------------------------------
+
+rem if not "$(ConfigurationName)"=="Release" goto :noRelease
+
+echo Packaging for NuGet...
+
+set nuget=nuget.exe
+rem set nuget="$(SolutionDir)\.nuget\NuGet.exe"
+%25nuget%25 pack "$(ProjectDir)\VersionStitcher.nuspec" -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=$(ConfigurationName) 
+
+:noRelease
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets" Condition="Exists('..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

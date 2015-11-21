@@ -1,11 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ include file="ProductInfoValues.tt" #>
-#region SignReferences
-// An automatic tool to presign unsigned dependencies
-// https://github.com/picrap/SignReferences
-#endregion
-
 using System.Reflection;
 
 [assembly: AssemblyDescription("<#=Description#>")]

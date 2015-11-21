@@ -1,7 +1,7 @@
-﻿<?xml version="1.0"?>
-<#@ template="" debug="false" hostspecific="true" language="C#" #>
-<#@ output="" extension=".nuspec" #>
-<#@ include="" file="Properties\ProductInfoValues.tt" #>
+<?xml version="1.0" encoding="utf-8" ?>
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".nuspec" #>
+<#@ include file="Properties\ProductInfoValues.tt" #>
 <package>
   <metadata>
     <id>VersionStitcher</id>
@@ -21,7 +21,7 @@
     <developmentDependency>true</developmentDependency>
   </metadata>
   <files>
-    <file src="VersionStitcher.nuspec" target="build"/>
+    <file src="VersionStitcher.targets" target="build\"/>
     <file src="bin\$ConfigurationName$\VersionStitcher.exe" target="."/>
   </files>
 </package>
