@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <VersionStitcherPath Condition="$(VersionStitcherPath) == '' Or $(VersionStitcherPath) == '*Undefined*'">$(MSBuildThisFileDirectory)..\VersionStitcher.exe.task</VersionStitcherPath>
+    <VersionStitcherPath Condition="$(VersionStitcherPath) == '' Or $(VersionStitcherPath) == '*Undefined*'">$(MSBuildThisFileDirectory)..\VersionStitcher.exe</VersionStitcherPath>
   </PropertyGroup>
 
   <UsingTask
