@@ -3,7 +3,7 @@
     var Version = "0.1.0.4";
     var Title = "Version Stitcher";
     var Company = "openstore.craponne.fr";
-    //var License = "MIT License";
+    var License = "MIT License";
     var LicenseUrl = "http://opensource.org/licenses/mit-license.php";
     var Description = "Injects version from source control information (git) based on explicit text patterns in assembly.";
 #>
