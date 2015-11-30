@@ -103,7 +103,14 @@
                 return;
             using (var fileStream = File.Create(filePath))
                 resourceStream.CopyTo(fileStream);
-            _dispose.Add(() => File.Delete(filePath));
+            _dispose.Add(delegate
+            {
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch (UnauthorizedAccessException) { }
+            });
         }
 
         /// <summary>
@@ -111,12 +118,13 @@
         /// </summary>
         private void DeployNativeBinaries()
         {
+            var architecture = Environment.Is64BitProcess ? "amd64" : "x86";
+
             // create temp folder
-            var nativeBinariesDirectory = Path.Combine(Path.GetTempPath(), $"GitNativeBinaries-{Guid.NewGuid()}");
+            var nativeBinariesDirectory = Path.Combine(Path.GetTempPath(), $"GitNativeBinaries-{architecture}");
             CreateDirectory(nativeBinariesDirectory);
 
             // find resource
-            var architecture = Environment.Is64BitProcess ? "amd64" : "x86";
             const string dllName = "git2-e0902fb.dll";
             var thisAssembly = GetType().Assembly;
             var resourceStream = thisAssembly.GetManifestResourceStream(GetType(), architecture + "." + dllName);
