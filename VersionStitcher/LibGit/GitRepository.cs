@@ -116,7 +116,7 @@
             CreateDirectory(nativeBinariesDirectory);
 
             // find resource
-            var architecture = Environment.Is64BitOperatingSystem ? "amd64" : "x86";
+            var architecture = Environment.Is64BitProcess ? "amd64" : "x86";
             const string dllName = "git2-e0902fb.dll";
             var thisAssembly = GetType().Assembly;
             var resourceStream = thisAssembly.GetManifestResourceStream(GetType(), architecture + "." + dllName);
