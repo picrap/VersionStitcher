@@ -125,7 +125,7 @@
 
 rem --- NuGet pack ------------------------------------------------------------------------------
 
-rem if not "$(ConfigurationName)"=="Release" goto :noRelease
+if not "$(ConfigurationName)"=="Release" goto :noRelease
 
 echo Packaging for NuGet...
 

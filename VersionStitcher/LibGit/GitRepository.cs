@@ -111,19 +111,25 @@
         /// </summary>
         private void DeployNativeBinaries()
         {
-            var thisAssembly = GetType().Assembly;
-            var thisDirectory = Path.GetDirectoryName(thisAssembly.Location);
-            var nativeBinariesDirectory = Path.Combine(thisDirectory, "NativeBinaries");
+            // create temp folder
+            var nativeBinariesDirectory = Path.Combine(Path.GetTempPath(), $"GitNativeBinaries-{Guid.NewGuid()}");
             CreateDirectory(nativeBinariesDirectory);
-            var resourcesNamespace = GetType().Namespace;
-            foreach (var resourceFullName in thisAssembly.GetManifestResourceNames().Where(n => n.StartsWith(resourcesNamespace)))
-            {
-                var resourceName = resourceFullName.Substring(resourcesNamespace.Length + 1);
-                var parts = resourceName.Split(new[] { '.' }, resourceName.Count(c => c == '.'));
-                var subDirectory = CreateDirectory(nativeBinariesDirectory, parts.Take(parts.Length - 1));
-                var filePath = Path.Combine(subDirectory, parts.Last());
-                CreateFile(filePath, thisAssembly.GetManifestResourceStream(resourceFullName));
-            }
+
+            // find resource
+            var architecture = Environment.Is64BitOperatingSystem ? "amd64" : "x86";
+            const string dllName = "git2-e0902fb.dll";
+            var thisAssembly = GetType().Assembly;
+            var resourceStream = thisAssembly.GetManifestResourceStream(GetType(), architecture + "." + dllName);
+
+            // open resource and create file
+            var filePath = Path.Combine(nativeBinariesDirectory, dllName);
+            CreateFile(filePath, resourceStream);
+
+            // update env path
+            const string pathVariable = "path";
+            var environmentPath = Environment.GetEnvironmentVariable(pathVariable);
+            Environment.SetEnvironmentVariable(pathVariable, nativeBinariesDirectory + ";" + environmentPath);
+            _dispose.Add(() => Environment.SetEnvironmentVariable(pathVariable, environmentPath));
         }
     }
 }
