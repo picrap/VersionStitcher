@@ -72,7 +72,14 @@
             if (Directory.Exists(directoryPath))
                 return;
             Directory.CreateDirectory(directoryPath);
-            _dispose.Add(() => Directory.Delete(directoryPath));
+            _dispose.Add(delegate
+            {
+                try
+                {
+                    Directory.Delete(directoryPath);
+                }
+                catch (IOException) { }
+            });
         }
 
         /// <summary>
