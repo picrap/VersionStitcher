@@ -101,7 +101,7 @@ namespace VersionStitcher
         private static bool ProcessStrings(ModuleDefMD moduleDef, Func<string, string> process)
         {
             var processed = ProcessStringsInAssemblyAttributes(moduleDef, process);
-            processed = ProcessStringsInAssemblyTypes(moduleDef, process);
+            processed = ProcessStringsInAssemblyTypes(moduleDef, process) || processed;
             return processed;
         }
 
@@ -128,7 +128,7 @@ namespace VersionStitcher
             foreach (var methodDef in typeDef.Methods)
                 processed = ProcessStringsInMethod(methodDef, process) || processed;
             foreach (var nestedTypeDef in typeDef.NestedTypes)
-                processed = ProcessStringsInType(nestedTypeDef, process);
+                processed = ProcessStringsInType(nestedTypeDef, process) || processed;
             return processed;
         }
 
