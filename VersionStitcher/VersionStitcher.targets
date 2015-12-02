@@ -12,7 +12,7 @@
       Name="VersionStitcherTarget"
       AfterTargets="CoreCompile"
       >
-    <VersionStitcherTask ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" />
+    <VersionStitcherTask ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" AssemblyPath="$(OutputPath)" />
   </Target>
 </Project>
 
