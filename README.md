@@ -10,7 +10,7 @@ Add special tags in the application strings, such as:
 Console.WriteLine("Hi, I'm on {Version.CommitShortID}");
 ```
 After build it will output something like:
-`Hi, I'm on 1fab21c`
+`Hi, I'm on 1fab21ca`
 
 ## Recognized commands
 
