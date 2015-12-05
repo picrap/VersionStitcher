@@ -132,7 +132,7 @@ echo Packaging for NuGet...
 set nuget=nuget.exe
 rem set nuget="$(SolutionDir)\.nuget\NuGet.exe"
 
-copy "$(TargetPath)" "$(TargetDir)$(TargetName).dll"
+rem copy "$(TargetPath)" "$(TargetDir)$(TargetName).dll"
 %25nuget%25 pack "$(ProjectDir)\VersionStitcher.nuspec" -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=$(ConfigurationName) 
 
 :noRelease

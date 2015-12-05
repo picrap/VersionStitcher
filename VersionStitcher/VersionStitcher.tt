@@ -22,6 +22,6 @@
   </metadata>
   <files>
     <file src="VersionStitcher.targets" target="build\"/>
-    <file src="bin\$ConfigurationName$\VersionStitcher.dll" target="."/>
+    <file src="bin\$ConfigurationName$\VersionStitcher.exe" target="."/>
   </files>
 </package>
