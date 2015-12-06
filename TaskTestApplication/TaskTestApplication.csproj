@@ -52,8 +52,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\VersionStitcher\VersionStitcher.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe.task"
-copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe"
+    <PreBuildEvent>copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe"
+copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe.debugTask"
 </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

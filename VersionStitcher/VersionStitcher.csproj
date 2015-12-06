@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,8 +52,8 @@
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="StitcherBoy, Version=0.1.1.5, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\StitcherBoy.0.1.1.5\lib\net40\StitcherBoy.dll</HintPath>
+    <Reference Include="StitcherBoy, Version=0.1.2.1, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\StitcherBoy.0.1.2.1\lib\net40\StitcherBoy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -69,9 +70,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductInfo.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utility\LogicalUtility.cs" />
+    <Compile Include="Utility\ModuleUtility.cs" />
+    <Compile Include="Utility\StreamUtility.cs" />
     <Compile Include="VersionStitcher.cs" />
+    <Compile Include="VersionStitcher.Custom.cs" />
+    <Compile Include="VersionStitcher.Strings.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32\VS_VERSIONINFO.cs" />
+    <Compile Include="Win32\VS_FIXEDFILEINFO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
