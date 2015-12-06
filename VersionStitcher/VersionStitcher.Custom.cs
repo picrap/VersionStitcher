@@ -7,14 +7,11 @@ namespace VersionStitcher
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using dnlib.DotNet;
-    using dnlib.DotNet.Resources;
     using dnlib.W32Resources;
     using Utility;
     using Win32;
-
-
+    
     partial class VersionStitcher
     {
         private bool ProcessCustomVersion(ModuleDefMD moduleDef)
@@ -65,10 +62,11 @@ namespace VersionStitcher
             {
                 try
                 {
-
                     using (var m = x.ToDataStream())
                     {
                         var vi = m.Read<VS_VERSIONINFO>();
+                        var vfi = m.Read<VarFileInfo>();
+                        var v1 = m.Read<Var>();
                     }
                     //using (var r1 = new System.Resources.ResourceReader(m))
                     //{

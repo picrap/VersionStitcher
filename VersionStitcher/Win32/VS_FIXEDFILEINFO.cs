@@ -7,7 +7,7 @@ namespace VersionStitcher.Win32
     using System.Runtime.InteropServices;
     using DWORD = System.UInt32;
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
     public struct VS_FIXEDFILEINFO
     {
         public DWORD dwSignature;
