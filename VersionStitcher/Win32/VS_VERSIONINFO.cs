@@ -8,7 +8,7 @@ namespace VersionStitcher.Win32
     using WORD = System.Int16;
     using WCHAR = System.Char;
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
     internal struct VS_VERSIONINFO
     {
         /// <summary>
@@ -37,7 +37,7 @@ namespace VersionStitcher.Win32
         /// Contains as many zero words as necessary to align the Value member on a 32-bit boundary.
         /// </summary>
         public WORD Padding1;
-        public WORD Padding1b;
+        //public WORD Padding1b;
 
         /// <summary>
         /// Arbitrary data associated with this VS_VERSIONINFO structure.
@@ -47,7 +47,7 @@ namespace VersionStitcher.Win32
         /// <summary>
         /// As many zero words as necessary to align the Children member on a 32-bit boundary.
         /// </summary>
-        //public WORD Padding2;
+        public WORD Padding2;
 
         /// <summary>
         /// An array of zero or one StringFileInfo structures,

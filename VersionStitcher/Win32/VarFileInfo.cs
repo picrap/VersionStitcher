@@ -4,7 +4,7 @@ namespace VersionStitcher.Win32
     using System.Runtime.InteropServices;
     using WORD = System.Int16;
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
     internal struct VarFileInfo
     {
         public WORD wLength;
