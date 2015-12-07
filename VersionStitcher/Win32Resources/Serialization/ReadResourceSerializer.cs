@@ -2,7 +2,7 @@
 // https://github.com/picrap/VersionStitcher
 // MIT License - http://opensource.org/licenses/MIT
 
-namespace VersionStitcher.Win32Resources
+namespace VersionStitcher.Win32Resources.Serialization
 {
     using System;
     using System.Collections.Generic;
@@ -88,6 +88,8 @@ namespace VersionStitcher.Win32Resources
             }
         }
 
+        public override bool SerializeWCHAR(ref string wchar, ref short valueLength) => SerializeWCHAR(ref wchar);
+
         public override bool SerializeValue(ref byte[] value, ref short valueLength)
         {
             value = new byte[valueLength];
@@ -102,15 +104,35 @@ namespace VersionStitcher.Win32Resources
             return Read(_buffer, 2) == 2;
         }
 
-        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource)
+        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource, ref short length)
         {
             serializedResource = new TSerializedResource();
             return serializedResource.Serialize(this);
         }
 
-        public override bool Serialize<TSerializedResource>(KeyedResource owner, ref TSerializedResource[] serializedResource, ref short length, params Type[] expectedTypes)
+        private KeyedResource SerializeKeyedResource(params Type[] expectedTypes)
         {
-            var ownerLength = _stream.Position - owner.Offset;
+            var keyedResourceHeader = new KeyedResource();
+            if (!keyedResourceHeader.Serialize(this))
+                return null;
+            foreach (var expectedType in expectedTypes)
+            {
+                var keyedResource = (KeyedResource)Activator.CreateInstance(expectedType);
+                keyedResource.Offset = keyedResourceHeader.Offset;
+                keyedResource.wValueLength = keyedResourceHeader.wValueLength;
+                keyedResource.wLength = keyedResourceHeader.wLength;
+                keyedResource.wType = keyedResourceHeader.wType;
+                keyedResource.szKey = keyedResourceHeader.szKey;
+                var validatedKeyedResource = keyedResource as ValidatedKeyedResource;
+                if (validatedKeyedResource == null || validatedKeyedResource.Validate())
+                    return keyedResource.SerializeValue(this) && keyedResource.SerializeChildren(this) ? keyedResource : null;
+            }
+            return null;
+        }
+
+        public override bool Serialize<TSerializedResource>(KeyedResource owner, ref TSerializedResource[] serializedResources, ref short length, params Type[] expectedTypes)
+        {
+            var ownerLength = _offset - owner.Offset;
             var remainingLength = length - ownerLength;
             var buffer = new byte[remainingLength];
             if (Read(buffer, buffer.Length) != remainingLength)
@@ -125,10 +147,9 @@ namespace VersionStitcher.Win32Resources
                     var child = (TSerializedResource)(SerializedResource)subSerializer.SerializeKeyedResource(expectedTypes);
                     if (child == null)
                     {
-                        serializedResource = children.ToArray();
+                        serializedResources = children.ToArray();
                         return true;
                     }
-                    length += (short)subSerializer._offset;
                     children.Add(child);
                 }
             }

@@ -11,6 +11,7 @@ namespace VersionStitcher
     using dnlib.W32Resources;
     using Utility;
     using Win32Resources;
+    using Win32Resources.Serialization;
 
     partial class VersionStitcher
     {

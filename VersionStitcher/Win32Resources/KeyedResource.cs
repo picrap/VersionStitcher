@@ -4,6 +4,7 @@
 
 namespace VersionStitcher.Win32Resources
 {
+    using Serialization;
     using WORD = System.Int16;
     using WCHAR = System.String;
 
@@ -19,14 +20,20 @@ namespace VersionStitcher.Win32Resources
         public override bool Serialize(ResourceSerializer serializer)
         {
             Offset = serializer.Offset;
+            return SerializeHeader(serializer) && SerializeValue(serializer) && SerializeChildren(serializer);
+        }
+
+        public virtual bool SerializeHeader(ResourceSerializer serializer)
+        {
             return serializer.SerializeWORD(ref wLength)
                    && serializer.SerializeWORD(ref wValueLength)
                    && serializer.SerializeWORD(ref wType)
                    && serializer.SerializeWCHAR(ref szKey)
-                   && serializer.PadDWORD()
-                   && SerializeBody(serializer);
+                   && serializer.PadDWORD();
         }
 
-        public virtual bool SerializeBody(ResourceSerializer serializer) => true;
+        public virtual bool SerializeValue(ResourceSerializer serializer) => true;
+
+        public virtual bool SerializeChildren(ResourceSerializer serializer) => true;
     }
 }

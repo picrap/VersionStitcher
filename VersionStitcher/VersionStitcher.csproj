@@ -79,8 +79,9 @@
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Resources\KeyedResource.cs" />
-    <Compile Include="Win32Resources\ReadResourceSerializer.cs" />
-    <Compile Include="Win32Resources\ResourceSerializer.cs" />
+    <Compile Include="Win32Resources\Serialization\ReadResourceSerializer.cs" />
+    <Compile Include="Win32Resources\Serialization\ResourceSerializer.cs" />
+    <Compile Include="Win32Resources\Serialization\WriteResourceSerializer.cs" />
     <Compile Include="Win32Resources\SerializedResource.cs" />
     <Compile Include="Win32Resources\String.cs" />
     <Compile Include="Win32Resources\StringFileInfo.cs" />

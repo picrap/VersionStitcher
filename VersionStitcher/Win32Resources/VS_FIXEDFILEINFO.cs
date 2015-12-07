@@ -5,6 +5,7 @@
 namespace VersionStitcher.Win32Resources
 {
     using System.Runtime.InteropServices;
+    using Serialization;
     using DWORD = System.UInt32;
 
     public class VS_FIXEDFILEINFO: SerializedResource

@@ -4,6 +4,8 @@
 
 namespace VersionStitcher.Win32Resources
 {
+    using Serialization;
+
     public abstract class SerializedResource
     {
         public abstract bool Serialize(ResourceSerializer serializer);

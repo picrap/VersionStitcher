@@ -5,6 +5,7 @@
 namespace VersionStitcher.Win32Resources
 {
     using System.Runtime.InteropServices;
+    using Serialization;
     using WORD = System.Int16;
     using WCHAR = System.Char;
 
@@ -23,9 +24,7 @@ namespace VersionStitcher.Win32Resources
 
         public override bool Validate() => szKey == "VS_VERSION_INFO";
 
-        public override bool SerializeBody(ResourceSerializer serializer)
-        {
-            return serializer.Serialize(ref Value) && serializer.PadDWORD() && serializer.Serialize(this, ref Children, ref wLength, typeof(VarFileInfo), typeof(StringFileInfo));
-        }
+        public override bool SerializeValue(ResourceSerializer serializer) => serializer.Serialize(ref Value, ref wValueLength) && serializer.PadDWORD();
+        public override bool SerializeChildren(ResourceSerializer serializer) => serializer.Serialize(this, ref Children, ref wLength, typeof(VarFileInfo), typeof(StringFileInfo));
     }
 }
