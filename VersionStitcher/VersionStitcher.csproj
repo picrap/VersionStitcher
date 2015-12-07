@@ -78,14 +78,18 @@
     <Compile Include="VersionStitcher.Strings.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Win32\String.cs" />
-    <Compile Include="Win32\StringFileInfo.cs" />
-    <Compile Include="Win32\StringTable.cs" />
-    <Compile Include="Win32\VariableStruct.cs" />
-    <Compile Include="Win32\Var.cs" />
-    <Compile Include="Win32\VarFileInfo.cs" />
-    <Compile Include="Win32\VS_VERSIONINFO.cs" />
-    <Compile Include="Win32\VS_FIXEDFILEINFO.cs" />
+    <Compile Include="Win32Resources\KeyedResource.cs" />
+    <Compile Include="Win32Resources\ReadResourceSerializer.cs" />
+    <Compile Include="Win32Resources\ResourceSerializer.cs" />
+    <Compile Include="Win32Resources\SerializedResource.cs" />
+    <Compile Include="Win32Resources\String.cs" />
+    <Compile Include="Win32Resources\StringFileInfo.cs" />
+    <Compile Include="Win32Resources\StringTable.cs" />
+    <Compile Include="Win32Resources\ValidatedKeyedResource.cs" />
+    <Compile Include="Win32Resources\Var.cs" />
+    <Compile Include="Win32Resources\VarFileInfo.cs" />
+    <Compile Include="Win32Resources\VS_FIXEDFILEINFO.cs" />
+    <Compile Include="Win32Resources\VS_VERSIONINFO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

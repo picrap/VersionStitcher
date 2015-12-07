@@ -10,7 +10,7 @@ namespace VersionStitcher
     using dnlib.DotNet;
     using dnlib.W32Resources;
     using Utility;
-    using Win32;
+    using Win32Resources;
 
     partial class VersionStitcher
     {
@@ -62,11 +62,13 @@ namespace VersionStitcher
             {
                 try
                 {
-                    using (var m = x.ToDataStream())
+                    using (var s = new ReadResourceSerializer( x.ToDataStream()))
                     {
-                        var vi = m.Read<VS_VERSIONINFO>();
-                        var vfi = new VariableVarFileInfo();
-                        vfi.Read(m);
+                        var vi = new VS_VERSIONINFO();
+                        vi.Serialize(s);
+                        //var vi = m.Read<VS_VERSIONINFO>();
+                        //var vfi = new VariableVarFileInfo();
+                        //vfi.Read(m);
                     }
                     //using (var r1 = new System.Resources.ResourceReader(m))
                     //{
