@@ -87,10 +87,15 @@ namespace VersionStitcher.Win32Resources.Serialization
             {
                 foreach (var serializedResource in serializedResources)
                 {
-                    var localSerializedResource = serializedResource;
-                    short l = 0;
-                    // TODO: something with this unused length
-                    writer.Serialize(ref localSerializedResource, ref l);
+                    var keyedResource = serializedResource as KeyedResource;
+                    if (keyedResource != null)
+                        writer.Serialize(ref keyedResource, ref keyedResource.wLength);
+                    else
+                    {
+                        var localSerializedResource = serializedResource;
+                        short l = 0;
+                        writer.Serialize(ref localSerializedResource, ref l);
+                    }
                 }
                 var bytes = memoryStream.ToArray();
                 length = (short)(ownerLength + bytes.Length);

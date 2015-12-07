@@ -45,5 +45,70 @@ namespace VersionStitcherTest
                 Assert.IsTrue(b.SequenceEqual(b2));
             }
         }
+
+        [TestMethod]
+        public void ClearSerializeTest()
+        {
+            using (var s = GetType().Assembly.GetManifestResourceStream(GetType(), "version"))
+            {
+                var m = new MemoryStream();
+                s.CopyTo(m);
+                m.Seek(0, SeekOrigin.Begin);
+
+                var i = ResourceSerializer.Deserialize<VS_VERSIONINFO>(m);
+                ClearLengths(i);
+
+                var m2 = new MemoryStream();
+                ResourceSerializer.Serialize(i, m2);
+
+                var b = m.ToArray();
+                var b2 = m2.ToArray();
+                Assert.AreEqual(b.Length, b2.Length);
+                for (int index = 0; index < b.Length; index++)
+                    Assert.AreEqual(b[index], b2[index]);
+            }
+        }
+
+        private void ClearLengths(VS_VERSIONINFO i)
+        {
+            ClearHeader(i);
+            foreach (var c in i.Children)
+            {
+                var sfi = c as StringFileInfo;
+                if (sfi != null)
+                    ClearLengths(sfi);
+                var vsfi = c as VarFileInfo;
+                if (vsfi != null)
+                    ClearLengths(vsfi);
+            }
+        }
+
+        private void ClearLengths(StringFileInfo i)
+        {
+            ClearHeader(i);
+            foreach (var st in i.Children)
+            {
+                ClearHeader(st);
+                foreach (var s in st.Children)
+                {
+                    ClearHeader(s);
+                }
+            }
+        }
+
+        private void ClearLengths(VarFileInfo i)
+        {
+            ClearHeader(i);
+            foreach (var v in i.Children)
+            {
+                ClearHeader(v);
+            }
+        }
+
+        private void ClearHeader(KeyedResource r)
+        {
+            r.wLength = 0;
+            r.wValueLength = 0;
+        }
     }
 }

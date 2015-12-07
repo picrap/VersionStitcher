@@ -33,14 +33,16 @@ namespace VersionStitcher.Win32Resources.Serialization
         {
             var deserializer = new ReadResourceSerializer(stream);
             var resource = new TResource();
-            resource.Serialize(deserializer);
+            short l = 0;
+            deserializer.Serialize(ref resource, ref l);
             return resource;
         }
         public static void Serialize<TResource>(TResource resource, Stream stream)
-            where TResource : SerializedResource
+            where TResource : SerializedResource, new()
         {
             var serializer = new WriteResourceSerializer(stream);
-            resource.Serialize(serializer);
+            short l = 0;
+            serializer.Serialize(ref resource, ref l);
         }
     }
 }
