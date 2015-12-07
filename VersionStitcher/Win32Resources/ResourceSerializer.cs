@@ -5,6 +5,7 @@
 namespace VersionStitcher.Win32Resources
 {
     using System;
+    using System.IO;
 
     public abstract class ResourceSerializer
     {
@@ -44,6 +45,15 @@ namespace VersionStitcher.Win32Resources
                     return keyedResource.SerializeBody(this) ? keyedResource : null;
             }
             return null;
+        }
+
+        public static TResource Deserialize<TResource>(Stream stream)
+            where TResource : SerializedResource, new()
+        {
+            var deserializer = new ReadResourceSerializer(stream);
+            var resource = new TResource();
+            resource.Serialize(deserializer);
+            return resource;
         }
     }
 }

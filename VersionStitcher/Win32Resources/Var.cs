@@ -7,7 +7,6 @@ namespace VersionStitcher.Win32Resources
 
     public class Var : ValidatedKeyedResource
     {
-        //public DWORD Value;
         public byte[] Value;
 
         public override bool Validate() => szKey == "Translation";

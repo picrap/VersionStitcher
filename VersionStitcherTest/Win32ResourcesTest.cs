@@ -14,10 +14,9 @@ namespace VersionStitcherTest
         [TestMethod]
         public void DeserializeTest()
         {
-            using (var s = new ReadResourceSerializer(GetType().Assembly.GetManifestResourceStream(GetType(), "version")))
+            using (var s = GetType().Assembly.GetManifestResourceStream(GetType(), "version"))
             {
-                var i = new VS_VERSIONINFO();
-                i.Serialize(s);
+                var i = ResourceSerializer.Deserialize<VS_VERSIONINFO>(s);
                 var sfi = i.Children.OfType<StringFileInfo>().SingleOrDefault();
                 Assert.IsNotNull(sfi);
                 var st = sfi.Children[0];

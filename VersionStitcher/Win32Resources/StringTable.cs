@@ -6,7 +6,6 @@ namespace VersionStitcher.Win32Resources
 
     public class StringTable : KeyedResource
     {
-        //    String Children;
         public String[] Children;
 
         public override bool SerializeBody(ResourceSerializer serializer)
