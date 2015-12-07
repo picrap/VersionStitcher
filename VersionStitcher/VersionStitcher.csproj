@@ -78,6 +78,10 @@
     <Compile Include="VersionStitcher.Strings.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32\String.cs" />
+    <Compile Include="Win32\StringFileInfo.cs" />
+    <Compile Include="Win32\StringTable.cs" />
+    <Compile Include="Win32\VariableStruct.cs" />
     <Compile Include="Win32\Var.cs" />
     <Compile Include="Win32\VarFileInfo.cs" />
     <Compile Include="Win32\VS_VERSIONINFO.cs" />

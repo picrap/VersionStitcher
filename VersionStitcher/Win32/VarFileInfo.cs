@@ -16,4 +16,9 @@ namespace VersionStitcher.Win32
         public WORD Padding2;
         //Var Children;
     }
+
+    internal class VariableVarFileInfo : ValueVariableStruct<VarFileInfo, VariableVar>
+    {
+        protected override int TotalSize { get { return Struct.wLength; } set { Struct.wLength = (WORD)value; } }
+    }
 }
