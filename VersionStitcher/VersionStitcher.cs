@@ -9,11 +9,9 @@ namespace VersionStitcher
     using System.IO;
     using System.Linq;
     using dnlib.DotNet;
-    using dnlib.DotNet.Resources;
     using dnlib.IO;
     using dnlib.W32Resources;
     using Information;
-    using StitcherBoy.Project;
     using StitcherBoy.Weaving;
     using Utility;
     using Win32Resources;
@@ -40,22 +38,18 @@ namespace VersionStitcher
         /// <summary>
         /// Processes the specified module.
         /// </summary>
-        /// <param name="moduleDef">The module definition.</param>
-        /// <param name="assemblyPath"></param>
-        /// <param name="project"></param>
-        /// <param name="projectPath"></param>
-        /// <param name="solutionPath"></param>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override bool Process(ModuleDefMD moduleDef, string assemblyPath, ProjectDefinition project, string projectPath, string solutionPath)
+        protected override bool Process(StitcherContext context)
         {
             try
             {
-                var information = InformationProvider.GetInformation(projectPath, solutionPath);
-                var versions = LoadVersions(moduleDef).ToArray();
-                var update = ProcessStrings(moduleDef, versions, s => ProcessVersionString(s, information))
-                    .OrAny(ProcessCustomVersion(moduleDef, versions));
+                var information = InformationProvider.GetInformation(context.ProjectPath, context.SolutionPath);
+                var versions = LoadVersions(context.Module).ToArray();
+                var update = ProcessStrings(context.Module, versions, s => ProcessVersionString(s, information))
+                    .OrAny(ProcessCustomVersion(context.Module, versions));
                 if (update)
-                    SaveVersions(moduleDef, versions);
+                    SaveVersions(context.Module, versions);
                 return update;
             }
             catch (OperationCanceledException) { }
