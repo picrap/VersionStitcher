@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VersionStitcher\VersionStitcher.csproj">
+    <ProjectReference Include="..\..\VersionStitcher\VersionStitcher.csproj">
       <Project>{78dc845d-47b0-4473-a97b-b262324143c0}</Project>
       <Name>VersionStitcher</Name>
     </ProjectReference>

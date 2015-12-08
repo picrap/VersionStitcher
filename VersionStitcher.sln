@@ -8,9 +8,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionStitcher", "VersionS
 		{49A55764-14CE-4186-AF3E-DD2AB4FC50C4} = {49A55764-14CE-4186-AF3E-DD2AB4FC50C4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "TestApplication\TestApplication.csproj", "{49A55764-14CE-4186-AF3E-DD2AB4FC50C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "Test\TestApplication\TestApplication.csproj", "{49A55764-14CE-4186-AF3E-DD2AB4FC50C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication", "TaskTestApplication\TaskTestApplication.csproj", "{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication", "Test\TaskTestApplication\TaskTestApplication.csproj", "{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{78DC845D-47B0-4473-A97B-B262324143C0} = {78DC845D-47B0-4473-A97B-B262324143C0}
 	EndProjectSection
@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{09C2601B
 		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionStitcherTest", "VersionStitcherTest\VersionStitcherTest.csproj", "{633DA65B-DB47-4B16-B7F1-BFCC442C68D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionStitcherTest", "Test\VersionStitcherTest\VersionStitcherTest.csproj", "{633DA65B-DB47-4B16-B7F1-BFCC442C68D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
