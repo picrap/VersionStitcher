@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props')" />
   <Import Project="..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -25,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,8 +53,8 @@
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="StitcherBoy, Version=0.1.1.5, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\StitcherBoy.0.1.1.5\lib\net40\StitcherBoy.dll</HintPath>
+    <Reference Include="StitcherBoy, Version=0.1.2.2, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\StitcherBoy.0.1.2.2\lib\net40\StitcherBoy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -69,9 +71,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductInfo.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utility\LogicalUtility.cs" />
+    <Compile Include="Utility\ModuleUtility.cs" />
+    <Compile Include="Utility\StreamUtility.cs" />
+    <Compile Include="Utility\VersionUtility.cs" />
     <Compile Include="VersionStitcher.cs" />
+    <Compile Include="VersionStitcher.Custom.cs" />
+    <Compile Include="VersionStitcher.Strings.cs" />
     <Compile Include="VersionStitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32Resources\KeyedResource.cs" />
+    <Compile Include="Win32Resources\Serialization\ReadResourceSerializer.cs" />
+    <Compile Include="Win32Resources\Serialization\ResourceSerializer.cs" />
+    <Compile Include="Win32Resources\Serialization\WriteResourceSerializer.cs" />
+    <Compile Include="Win32Resources\SerializedResource.cs" />
+    <Compile Include="Win32Resources\String.cs" />
+    <Compile Include="Win32Resources\StringFileInfo.cs" />
+    <Compile Include="Win32Resources\StringTable.cs" />
+    <Compile Include="Win32Resources\ValidatedKeyedResource.cs" />
+    <Compile Include="Win32Resources\Var.cs" />
+    <Compile Include="Win32Resources\VarFileInfo.cs" />
+    <Compile Include="Win32Resources\VS_FIXEDFILEINFO.cs" />
+    <Compile Include="Win32Resources\VS_VERSIONINFO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -115,8 +136,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props'))" />
     <Error Condition="!Exists('..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>rem --- ILMerge ------------------------------------------------------------------------------
