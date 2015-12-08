@@ -33,7 +33,6 @@ namespace VersionStitcher.Utility
         {
             using (var memoryStream = new MemoryStream())
             {
-                module.Write(@"C:\users\pascal\desktop\a.dll");
                 module.Write(memoryStream);
                 return memoryStream.ToArray();
             }
