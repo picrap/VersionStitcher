@@ -11,7 +11,7 @@ namespace VersionStitcher.Win32Resources.Serialization
     {
         public abstract bool IsWriting { get; }
 
-        public abstract int Offset { get; }
+        public abstract int UnpaddedOffset { get; }
 
         public abstract bool SerializeWORD(ref ushort word);
         public abstract bool SerializeWORD(ref short word);
@@ -22,7 +22,7 @@ namespace VersionStitcher.Win32Resources.Serialization
 
         public abstract bool PadDWORD();
 
-        public abstract bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource, ref short length)
+        public abstract bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource)
             where TSerializedResource : SerializedResource, new();
 
         public abstract bool Serialize<TSerializedResource>(KeyedResource owner, ref TSerializedResource[] serializedResources, ref short length, params Type[] expectedTypes)
@@ -33,16 +33,16 @@ namespace VersionStitcher.Win32Resources.Serialization
         {
             var deserializer = new ReadResourceSerializer(stream);
             var resource = new TResource();
-            short l = 0;
-            deserializer.Serialize(ref resource, ref l);
+            deserializer.Serialize(ref resource);
             return resource;
         }
         public static void Serialize<TResource>(TResource resource, Stream stream)
             where TResource : SerializedResource, new()
         {
             var serializer = new WriteResourceSerializer(stream);
-            short l = 0;
-            serializer.Serialize(ref resource, ref l);
+            serializer.Serialize(ref resource);
         }
+
+        public abstract bool SerializeLength(Func<ResourceSerializer, bool> subSerializer, ref short length);
     }
 }

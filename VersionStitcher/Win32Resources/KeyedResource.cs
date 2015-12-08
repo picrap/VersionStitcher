@@ -19,8 +19,7 @@ namespace VersionStitcher.Win32Resources
 
         public override bool Serialize(ResourceSerializer serializer)
         {
-            Offset = serializer.Offset;
-            return SerializeHeader(serializer) && SerializeValue(serializer) && SerializeChildren(serializer);
+            return serializer.SerializeLength(s => SerializeHeader(s) && SerializeValue(s) && SerializeChildren(s), ref wLength);
         }
 
         public virtual bool SerializeHeader(ResourceSerializer serializer)

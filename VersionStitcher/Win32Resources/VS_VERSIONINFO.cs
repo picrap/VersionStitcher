@@ -24,7 +24,11 @@ namespace VersionStitcher.Win32Resources
 
         public override bool Validate() => szKey == "VS_VERSION_INFO";
 
-        public override bool SerializeValue(ResourceSerializer serializer) => serializer.Serialize(ref Value, ref wValueLength) && serializer.PadDWORD();
+        public override bool SerializeValue(ResourceSerializer serializer)
+        {
+            return serializer.SerializeLength(s=> s.Serialize(ref Value), ref wValueLength) && serializer.PadDWORD();
+        }
+
         public override bool SerializeChildren(ResourceSerializer serializer) => serializer.Serialize(this, ref Children, ref wLength, typeof(VarFileInfo), typeof(StringFileInfo));
     }
 }

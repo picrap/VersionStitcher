@@ -7,10 +7,11 @@ namespace VersionStitcher.Win32Resources.Serialization
     {
         private readonly Stream _stream;
         private int _totalWritten;
+        private int _unpaddedOffset;
 
         public override bool IsWriting => true;
 
-        public override int Offset => _totalWritten;
+        public override int UnpaddedOffset => _unpaddedOffset;
 
         public WriteResourceSerializer(Stream stream)
         {
@@ -25,6 +26,7 @@ namespace VersionStitcher.Win32Resources.Serialization
         private bool Write(byte[] bytes)
         {
             _totalWritten += bytes.Length;
+            _unpaddedOffset = _totalWritten;
             _stream.Write(bytes, 0, bytes.Length);
             return true;
         }
@@ -63,19 +65,18 @@ namespace VersionStitcher.Win32Resources.Serialization
             // this currently assumes we're only dealing with WORDs and DWORDs
             if (_totalWritten % 4 == 0)
                 return true;
-            return Write(new byte[2]);
+            _totalWritten += 2;
+            _stream.Write(new byte[2], 0, 2);
+            return true;
         }
 
-        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource, ref short length)
+        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource)
         {
             // the trick is: the resource is serialized twice:
             // - first time to adjust headers
             // - second time to final resource
             using (var m = new MemoryStream())
-            {
                 serializedResource.Serialize(new WriteResourceSerializer(m));
-                length = (short)m.Length;
-            }
             return serializedResource.Serialize(this);
         }
 
@@ -87,20 +88,22 @@ namespace VersionStitcher.Win32Resources.Serialization
             {
                 foreach (var serializedResource in serializedResources)
                 {
-                    var keyedResource = serializedResource as KeyedResource;
-                    if (keyedResource != null)
-                        writer.Serialize(ref keyedResource, ref keyedResource.wLength);
-                    else
-                    {
-                        var localSerializedResource = serializedResource;
-                        short l = 0;
-                        writer.Serialize(ref localSerializedResource, ref l);
-                    }
+                    var localSerializedResource = serializedResource;
+                    writer.Serialize(ref localSerializedResource);
                 }
                 var bytes = memoryStream.ToArray();
                 length = (short)(ownerLength + bytes.Length);
                 return Write(bytes);
             }
+        }
+
+        public override bool SerializeLength(Func<ResourceSerializer, bool> subSerializer, ref short length)
+        {
+            var offset = _totalWritten;
+            var ok = subSerializer(this);
+            if (ok)
+                length = (short)(_unpaddedOffset - offset);
+            return ok;
         }
     }
 }

@@ -7,6 +7,7 @@ namespace VersionStitcher.Win32Resources.Serialization
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Text;
 
     public class ReadResourceSerializer : ResourceSerializer, IDisposable
@@ -16,7 +17,7 @@ namespace VersionStitcher.Win32Resources.Serialization
         private int _offset;
         public override bool IsWriting => false;
 
-        public override int Offset => _offset;
+        public override int UnpaddedOffset => _offset;
 
         public ReadResourceSerializer(Stream stream)
         {
@@ -104,7 +105,7 @@ namespace VersionStitcher.Win32Resources.Serialization
             return Read(_buffer, 2) == 2;
         }
 
-        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource, ref short length)
+        public override bool Serialize<TSerializedResource>(ref TSerializedResource serializedResource)
         {
             serializedResource = new TSerializedResource();
             return serializedResource.Serialize(this);
@@ -113,12 +114,13 @@ namespace VersionStitcher.Win32Resources.Serialization
         private KeyedResource SerializeKeyedResource(params Type[] expectedTypes)
         {
             var keyedResourceHeader = new KeyedResource();
+            var offset = _offset;
             if (!keyedResourceHeader.Serialize(this))
                 return null;
             foreach (var expectedType in expectedTypes)
             {
                 var keyedResource = (KeyedResource)Activator.CreateInstance(expectedType);
-                keyedResource.Offset = keyedResourceHeader.Offset;
+                keyedResource.Offset = offset;
                 keyedResource.wValueLength = keyedResourceHeader.wValueLength;
                 keyedResource.wLength = keyedResourceHeader.wLength;
                 keyedResource.wType = keyedResourceHeader.wType;
@@ -154,5 +156,7 @@ namespace VersionStitcher.Win32Resources.Serialization
                 }
             }
         }
+
+        public override bool SerializeLength(Func<ResourceSerializer, bool> subSerializer, ref short length) => subSerializer(this);
     }
 }

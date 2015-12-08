@@ -4,7 +4,6 @@
 
 namespace VersionStitcher.Win32Resources
 {
-    using System.Runtime.InteropServices;
     using Serialization;
     using DWORD = System.UInt32;
 
