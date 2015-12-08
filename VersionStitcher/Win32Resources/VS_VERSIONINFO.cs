@@ -5,6 +5,7 @@
 namespace VersionStitcher.Win32Resources
 {
     using System.Runtime.InteropServices;
+    using dnlib.W32Resources;
     using Serialization;
     using WORD = System.Int16;
     using WCHAR = System.Char;
@@ -21,6 +22,9 @@ namespace VersionStitcher.Win32Resources
         /// </summary>
         //public WORD Children;
         public KeyedResource[] Children;
+
+        public ResourceName DirectoryName;
+        public ResourceName DataName;
 
         public override bool Validate() => szKey == "VS_VERSION_INFO";
 

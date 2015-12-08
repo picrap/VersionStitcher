@@ -35,15 +35,20 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2.3.4")]
 [assembly: AssemblyFileVersion("5.6.7.8")]
+[assembly: AssemblyInformationalVersion("9.0.1.2")]
 
 internal static class Assembly
 {
     public static Version GetVersion()
     {
-        return new Version(4, 3, 2, 1);
+        return new Version(10, 20);
     }
     public static Version GetFileVersion()
     {
-        return new Version(8, 7, 6, 5);
+        return new Version(30, 40, 50);
+    }
+    public static Version GetProductVersion()
+    {
+        return new Version(60, 70, 80, 90);
     }
 }

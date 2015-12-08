@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props')" />
   <Import Project="..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -52,8 +53,8 @@
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="StitcherBoy, Version=0.1.2.1, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\StitcherBoy.0.1.2.1\lib\net40\StitcherBoy.dll</HintPath>
+    <Reference Include="StitcherBoy, Version=0.1.2.2, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\StitcherBoy.0.1.2.2\lib\net40\StitcherBoy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,6 +74,7 @@
     <Compile Include="Utility\LogicalUtility.cs" />
     <Compile Include="Utility\ModuleUtility.cs" />
     <Compile Include="Utility\StreamUtility.cs" />
+    <Compile Include="Utility\VersionUtility.cs" />
     <Compile Include="VersionStitcher.cs" />
     <Compile Include="VersionStitcher.Custom.cs" />
     <Compile Include="VersionStitcher.Strings.cs" />
@@ -134,8 +136,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props'))" />
     <Error Condition="!Exists('..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Clarius.TransformOnBuild.1.1.12\build\Clarius.TransformOnBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.114\build\LibGit2Sharp.NativeBinaries.props'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>rem --- ILMerge ------------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 namespace VersionStitcher
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -12,6 +13,8 @@ namespace VersionStitcher
     using dnlib.DotNet;
     using dnlib.DotNet.Emit;
     using Utility;
+    using Win32Resources;
+    using String = global::VersionStitcher.Win32Resources.String;
 
     partial class VersionStitcher
     {
@@ -59,11 +62,43 @@ namespace VersionStitcher
         /// Processes the strings.
         /// </summary>
         /// <param name="moduleDef">The module definition.</param>
+        /// <param name="versions">The versions.</param>
         /// <param name="process">The process.</param>
         /// <returns></returns>
-        private static bool ProcessStrings(ModuleDefMD moduleDef, Func<string, string> process)
+        private static bool ProcessStrings(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, Func<string, string> process)
         {
-            return ProcessStringsInAssemblyTypes(moduleDef, process).OrAny(ProcessStringsInAssemblyAttributes(moduleDef, process));
+            return ProcessStringsInAssemblyTypes(moduleDef, process)
+                .OrAny(ProcessStringsInAssemblyAttributes(moduleDef, process))
+                .OrAny(ProcessStringsInVersions(versions, process));
+        }
+
+        private static bool ProcessStringsInVersions(IEnumerable<VS_VERSIONINFO> versions, Func<string, string> process)
+        {
+            return versions.Select(versioninfo => ProcessStringsInVersion(versioninfo, process)).AnyOfAll();
+        }
+
+        private static bool ProcessStringsInVersion(VS_VERSIONINFO version, Func<string, string> process)
+        {
+            return version.Children.OfType<StringFileInfo>().Select(info => ProcessStringsInStringFileInfo(info, process)).AnyOfAll();
+        }
+
+        private static bool ProcessStringsInStringFileInfo(StringFileInfo stringFileInfo, Func<string, string> process)
+        {
+            return stringFileInfo.Children.Select(child => ProcessStringsInStringTable(child, process)).AnyOfAll();
+        }
+
+        private static bool ProcessStringsInStringTable(StringTable stringTable, Func<string, string> process)
+        {
+            return stringTable.Children.Select(table => ProcessStringsInString(table, process)).AnyOfAll();
+        }
+
+        private static bool ProcessStringsInString(String @string, Func<string, string> process)
+        {
+            var s = process(@string.Value);
+            if (s == null)
+                return false;
+            @string.Value = s;
+            return true;
         }
 
         /// <summary>
