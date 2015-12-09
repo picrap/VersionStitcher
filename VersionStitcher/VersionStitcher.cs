@@ -47,7 +47,7 @@ namespace VersionStitcher
                 var information = InformationProvider.GetInformation(context.ProjectPath, context.SolutionPath);
                 var versions = LoadVersions(context.Module).ToArray();
                 var update = ProcessStrings(context.Module, versions, s => ProcessVersionString(s, information))
-                    .OrAny(ProcessCustomVersion(context.Module, versions));
+                    .OrAny(ProcessCustomVersion(context.Module, versions, context.BuildTime));
                 if (update)
                     SaveVersions(context.Module, versions);
                 return update;

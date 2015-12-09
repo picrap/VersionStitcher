@@ -2,8 +2,12 @@
 	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">Version Stitcher - Injects git information at post-build step&#xD;
 https://github.com/picrap/VersionStitcher&#xD;
 MIT License - http://opensource.org/licenses/MIT</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=DWORD/@EntryIndexedValue">DWORD</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=ID/@EntryIndexedValue">ID</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=LS/@EntryIndexedValue">LS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=MS/@EntryIndexedValue">MS</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=UTC/@EntryIndexedValue">UTC</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=WORD/@EntryIndexedValue">WORD</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F94EDC247DA8FF48B311992748AB197B/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F94EDC247DA8FF48B311992748AB197B/AbsolutePath/@EntryValue">C:\Documents\Pascal\Developpement\VersionStitcher\VersionStitcher.sln.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F94EDC247DA8FF48B311992748AB197B/RelativePath/@EntryValue"></s:String>
