@@ -59,19 +59,24 @@ internal static class Assembly
     
     // This method is optional. If not specified it uses the value returned by GetVersion() above
     // It can also have a parameter of type DateTime which will receive the build time as argument.
-    // It can return a System.Version or System.String (in which the string is parsed to get a version when needed or kept literal)
+    // It can return a System.Version or System.String 
+    // (in which the string is parsed to get a version when needed or kept literal)
     // It updates or adds the AssemblyFileVersionAttribute ...
-    // ... as well as Win32 resource version (the FILEVERSION from VS_FIXEDFILEINFO, and "FileVersion" String from StringTable)
+    // ... as well as Win32 resource version (the FILEVERSION from VS_FIXEDFILEINFO, 
+    //                                        and "FileVersion" String from any version-related StringTable)
     public static Version GetFileVersion()
     {
         return new Version(30, 40, 50);
     }
 
-    // This method is optional too. If not specified it uses the value returned by GetFileVersion() or GetVersion() above
+    // This method is optional too. If not specified it uses the value returned by GetFileVersion()
+    // or GetVersion() above
     // It can also have a parameter of type DateTime which will receive the build time as argument.
-    // It can return a System.Version or System.String (in which the string is parsed to get a version when needed or kept literal)
+    // It can return a System.Version or System.String 
+    // (in which the string is parsed to get a version when needed or kept literal)
     // It updates or adds the AssemblyInformationalVersionAttribute ...
-    // ... as well as Win32 resource version (the PRODUCTVERSION from VS_FIXEDFILEINFO, and "ProductVersion" String from StringTable)
+    // ... as well as Win32 resource version (the PRODUCTVERSION from VS_FIXEDFILEINFO, 
+    //                                        and "ProductVersion" String from any version-related StringTable)
     public static Version GetProductVersion()
     {
         return new Version(60, 70, 80, 90);
