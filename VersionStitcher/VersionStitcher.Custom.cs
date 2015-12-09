@@ -15,7 +15,14 @@ namespace VersionStitcher
 
     partial class VersionStitcher
     {
-        private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions)
+        /// <summary>
+        /// Processes custom versions created by code in assembly.
+        /// </summary>
+        /// <param name="moduleDef">The module definition.</param>
+        /// <param name="versions">The versions.</param>
+        /// <param name="buildTime">The build time.</param>
+        /// <returns></returns>
+        private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime)
         {
             const string assemblyTypeName = "Assembly";
             var assemblyTypeDef = moduleDef.Types.SingleOrDefault(t => t.FullName == assemblyTypeName);
@@ -26,21 +33,22 @@ namespace VersionStitcher
             using (var customModule = ModuleUtility.CreateModule())
             {
                 assemblyTypeDef.Copy(customModule);
+                moduleDef.Types.Remove(assemblyTypeDef);
                 var customAssembly = customModule.Load();
                 var assemblyType = customAssembly.GetType(assemblyTypeName);
                 // first of all, try to get at least a version
-                var version = GetVersion(assemblyType, "GetVersion");
+                var version = GetVersion(assemblyType, "GetVersion", buildTime);
                 if (version == null)
                     return false;
                 var literalVersion = version.ToString();
 
                 // now we can try to get file and product versions
                 // ...files...
-                var literalFileVersion = GetLiteralVersion(assemblyType, "GetFileVersion") ?? literalVersion;
+                var literalFileVersion = GetLiteralVersion(assemblyType, "GetFileVersion", buildTime) ?? literalVersion;
                 Version fileVersion;
                 Version.TryParse(literalFileVersion, out fileVersion);
                 // ...product...
-                var literalProductVersion = GetLiteralVersion(assemblyType, "GetProductVersion") ?? literalFileVersion;
+                var literalProductVersion = GetLiteralVersion(assemblyType, "GetProductVersion", buildTime) ?? literalFileVersion;
                 Version productVersion;
                 Version.TryParse(literalProductVersion, out productVersion);
 
@@ -55,17 +63,17 @@ namespace VersionStitcher
                 // File version
                 updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyFileVersionAttribute), literalFileVersion) || updated;
                 updated = SetVersionString(versions, "FileVersion", literalFileVersion) || updated;
-                updated = versions.Select(v => SetFileVersionDWORDs(v, fileVersion)).AnyOfAll() || updated;
+                updated = versions.Select(v => SetFileVersionDWORD(v, fileVersion)).AnyOfAll() || updated;
 
                 // Product version
                 updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion) || updated;
                 updated = SetVersionString(versions, "ProductVersion", literalProductVersion) || updated;
-                updated = versions.Select(v => SetProductVersionDWORDs(v, productVersion)).AnyOfAll() || updated;
+                updated = versions.Select(v => SetProductVersionDWORD(v, productVersion)).AnyOfAll() || updated;
             }
             return updated;
         }
 
-        private static bool SetFileVersionDWORDs(VS_VERSIONINFO versionInfo, Version version)
+        private static bool SetFileVersionDWORD(VS_VERSIONINFO versionInfo, Version version)
         {
             var versionMS = version.GetVersionMS();
             var versionLS = version.GetVersionLS();
@@ -76,7 +84,7 @@ namespace VersionStitcher
             return true;
         }
 
-        private static bool SetProductVersionDWORDs(VS_VERSIONINFO versionInfo, Version version)
+        private static bool SetProductVersionDWORD(VS_VERSIONINFO versionInfo, Version version)
         {
             var versionMS = version.GetVersionMS();
             var versionLS = version.GetVersionLS();
@@ -143,15 +151,15 @@ namespace VersionStitcher
             return true;
         }
 
-        private Version GetVersion(Type type, string methodName)
+        private Version GetVersion(Type type, string methodName, DateTime buildTime)
         {
             var getVersionMethod = type.GetMethod(methodName);
             if (getVersionMethod == null)
                 return null;
-            return InvokeGetVersion(getVersionMethod);
+            return InvokeGetVersion(getVersionMethod, buildTime);
         }
 
-        private Version InvokeGetVersion(MethodInfo methodInfo)
+        private Version InvokeGetVersion(MethodInfo methodInfo, DateTime buildTime)
         {
             if (!methodInfo.IsStatic)
             {
@@ -159,7 +167,8 @@ namespace VersionStitcher
                 throw new OperationCanceledException();
             }
 
-            var parameters = new object[0];
+            var parameters = GetArguments(methodInfo, buildTime);
+
             if (methodInfo.ReturnType == typeof(string))
                 return new Version((string)methodInfo.Invoke(null, parameters));
             if (methodInfo.ReturnType == typeof(Version))
@@ -169,15 +178,28 @@ namespace VersionStitcher
             throw new OperationCanceledException();
         }
 
-        private string GetLiteralVersion(Type type, string methodName)
+        private object[] GetArguments(MethodInfo methodInfo, DateTime buildTime)
+        {
+            var parameters = methodInfo.GetParameters();
+            if (parameters.Length == 0)
+                return new object[0];
+
+            if (parameters.Length == 1 && parameters[0].ParameterType == typeof(DateTime))
+                return new object[] { buildTime };
+
+            Logging.WriteError($"Method Assembly.{methodInfo.Name}() can have at most one argument, of type System.DateTime");
+            throw new OperationCanceledException();
+        }
+
+        private string GetLiteralVersion(Type type, string methodName, DateTime buildTime)
         {
             var getVersionMethod = type.GetMethod(methodName);
             if (getVersionMethod == null)
                 return null;
-            return InvokeGetLiteralVersion(getVersionMethod);
+            return InvokeGetLiteralVersion(getVersionMethod, buildTime);
         }
 
-        private string InvokeGetLiteralVersion(MethodInfo methodInfo)
+        private string InvokeGetLiteralVersion(MethodInfo methodInfo, DateTime buildTime)
         {
             if (!methodInfo.IsStatic)
             {
@@ -185,7 +207,8 @@ namespace VersionStitcher
                 throw new OperationCanceledException();
             }
 
-            var parameters = new object[0];
+            var parameters = GetArguments(methodInfo, buildTime);
+
             if (methodInfo.ReturnType == typeof(string))
                 return (string)methodInfo.Invoke(null, parameters);
             if (methodInfo.ReturnType == typeof(Version))
