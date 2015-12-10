@@ -34,7 +34,7 @@ namespace VersionStitcher
             {
                 assemblyTypeDef.Copy(customModule);
                 // disabled for now... I need to figure out the problem with PDB
-                //moduleDef.Types.Remove(assemblyTypeDef);
+                moduleDef.Types.Remove(assemblyTypeDef);
                 var customAssembly = customModule.Load();
                 var assemblyType = customAssembly.GetType(assemblyTypeName);
                 // first of all, try to get at least a version
