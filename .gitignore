@@ -198,3 +198,4 @@ FakesAssemblies/
 /VersionStitcher.exe.task
 VersionStitcher/VersionStitcher.nuspec
 VersionStitcher/Properties/ProductInfo.cs
+*.debugTask
