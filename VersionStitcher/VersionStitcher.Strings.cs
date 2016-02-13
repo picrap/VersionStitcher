@@ -36,19 +36,56 @@ namespace VersionStitcher
                     ShowValues(information);
                     throw new OperationCanceledException();
                 }
+             
+                // main process: 1. try to get from information object (which contains build and git information)
+                //               2. then try to get from environment with the same name
+                //               3. finally defaults to an empty value
+                var value = GetPropertyValue(information, id) ?? GetEnvironmentValue(id) ?? "";
+             
+                // then format
                 var format = m.Groups["format"].Value;
-                var property = information.GetType().GetProperty(id, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-                var propertyValue = property?.GetValue(information);
-                if (propertyValue == null)
-                    return "";
-                var formattableValue = propertyValue as IFormattable;
-                if (formattableValue != null)
-                    return formattableValue.ToString(format, CultureInfo.InvariantCulture);
-                return propertyValue.ToString();
+                return GetFormattedValue(value, format);
             });
             if (r == s)
                 return null;
             return r;
+        }
+
+        /// <summary>
+        /// Gets the formatted value (if formattable).
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        private static string GetFormattedValue(object value, string format)
+        {
+            var formattableValue = value as IFormattable;
+            if (formattableValue != null)
+                return formattableValue.ToString(format, CultureInfo.InvariantCulture);
+            return value.ToString();
+        }
+
+        /// <summary>
+        /// Gets the property value from the current information object.
+        /// </summary>
+        /// <param name="information">The information.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        private static object GetPropertyValue(object information, string propertyName)
+        {
+            var property = information.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            var propertyValue = property?.GetValue(information);
+            return propertyValue;
+        }
+
+        /// <summary>
+        /// Gets the environment value.
+        /// </summary>
+        /// <param name="variableName">Name of the variable.</param>
+        /// <returns></returns>
+        private static object GetEnvironmentValue(string variableName)
+        {
+            return Environment.GetEnvironmentVariable(variableName);
         }
 
         private void ShowValues(object information)
