@@ -27,7 +27,9 @@ Pattern | Value
 `{Version.CommitID}` | Full commit ID (the SHA1 in git)
 `{Version.CommitShortID}` | Short commit ID
 `{Version.CommitMessage}` | Commit message
-`{Version.CommitAuthor}` | Author of last commit
+`{Version.CommitAuthor}` | Author of commit
+`{Version.CommitTime}` | Commit time
+`{Version.CommitTimeIso}` | Commit time, ISO 8601 format
 `{Version.IsDirty}` | Literal boolean indicating wheter changes are pending
 `{Version.IsDirtyLiteral}` | "" or "dirty", depending on the `IsDirty` value
 
