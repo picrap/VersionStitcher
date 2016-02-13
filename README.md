@@ -1,5 +1,5 @@
 # VersionStitcher
-Injects repository (git only for now) information (such as changeset, branch...) in assembly after it is compiled.  
+Injects repository (git only for now) information (such as changeset, branch...) in assembly after it is compiled.  It also falls back to environment variable if repository value is not found (or simply does not exist).
 Available as a [NuGet package](https://www.nuget.org/packages/VersionStitcher/).  
 Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/eblfjohu6qsa6cee/branch/master?svg=true)](https://ci.appveyor.com/project/picrap/versionstitcher/branch/master)  
 
@@ -34,6 +34,9 @@ Pattern | Value
 `{Version.IsDirtyLiteral}` | "" or "dirty", depending on the `IsDirty` value
 
 There is also the special command `{Version.Help}` which displays all available commands and their values.
+
+When used outside of a git repository, the only available values are the `Build*` values.
+When a value is not found (a repository value outside repository) or does not exist (`{Version.AgeOfTheCaptain}`), then VersionSticher tries to find it in environment variables (`%CommitTime%` or `%AgeOfTheCaptain%`, for example).
 
 ## Dynamic version injection
 
