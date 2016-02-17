@@ -72,6 +72,9 @@ namespace VersionStitcher.Information
                 var repositoryStatus = repository.Repository.RetrieveStatus();
                 gitInformation.IsDirty = repositoryStatus.IsDirty;
                 gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
+                var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.Name).ToArray();
+                gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.Name));
+
                 FillBuildInformation(gitInformation);
                 return gitInformation;
             }

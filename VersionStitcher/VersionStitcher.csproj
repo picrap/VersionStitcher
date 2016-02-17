@@ -95,6 +95,9 @@
     <Compile Include="Win32Resources\VS_VERSIONINFO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
