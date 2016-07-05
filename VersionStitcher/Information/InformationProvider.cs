@@ -68,7 +68,7 @@ namespace VersionStitcher.Information
                 gitInformation.CommitMessage = latestCommit.Message.Trim();
                 gitInformation.CommitAuthor = latestCommit.Author.ToString();
                 gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
-                gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("O");
+                gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
                 var repositoryStatus = repository.Repository.RetrieveStatus();
                 gitInformation.IsDirty = repositoryStatus.IsDirty;
                 gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
