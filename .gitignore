@@ -199,3 +199,5 @@ FakesAssemblies/
 VersionStitcher/VersionStitcher.nuspec
 VersionStitcher/Properties/ProductInfo.cs
 *.debugTask
+
+project.lock.json

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionStitcher", "VersionStitcher\VersionStitcher.csproj", "{78DC845D-47B0-4473-A97B-B262324143C0}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{8E6082FA-3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{09C2601B-E879-497D-9F1E-8A12AFF8B97E}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.gitmodules = .gitmodules
 		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject

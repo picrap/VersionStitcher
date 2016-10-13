@@ -15,11 +15,10 @@ namespace VersionStitcher.Information
         /// Gets the information.
         /// </summary>
         /// <param name="projectPath">The project path.</param>
-        /// <param name="solutionPath">The solution path.</param>
         /// <returns></returns>
-        public object GetInformation(string projectPath, string solutionPath)
+        public object GetInformation(string projectPath)
         {
-            return GetGitInformation(projectPath, solutionPath) ?? GetBuildInformation();
+            return GetGitInformation(projectPath) ?? GetBuildInformation();
         }
 
         /// <summary>
@@ -46,12 +45,11 @@ namespace VersionStitcher.Information
         /// <summary>
         /// Gets the git information.
         /// </summary>
-        /// <param name="projectPath">The project path.</param>
-        /// <param name="solutionPath">The solution path.</param>
+        /// <param name="assemblyPath">The assembly path.</param>
         /// <returns></returns>
-        private static GitInformation GetGitInformation(string projectPath, string solutionPath)
+        private static GitInformation GetGitInformation(string assemblyPath)
         {
-            var directories = new[] { projectPath, solutionPath }.Where(p => p != null).Select(Path.GetDirectoryName)
+            var directories = new[] { assemblyPath }.Where(p => p != null).Select(Path.GetDirectoryName)
                 .Select(d => string.IsNullOrEmpty(d) ? "." : d);
             using (var repository = GitRepository.TryLoad(directories.ToArray()))
             {

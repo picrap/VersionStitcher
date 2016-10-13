@@ -13,11 +13,12 @@ namespace VersionStitcher
     using dnlib.W32Resources;
     using Information;
     using StitcherBoy.Weaving;
+    using StitcherBoy.Weaving.Build;
     using Utility;
     using Win32Resources;
     using Win32Resources.Serialization;
 
-    public partial class VersionStitcher : SingleStitcher
+    public partial class VersionStitcher : AssemblyStitcher
     {
         /// <summary>
         /// Gets the information provider.
@@ -40,11 +41,11 @@ namespace VersionStitcher
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override bool Process(StitcherContext context)
+        protected override bool Process(AssemblyStitcherContext context)
         {
             try
             {
-                var information = InformationProvider.GetInformation(context.ProjectPath, context.SolutionPath);
+                var information = InformationProvider.GetInformation(context.Module.Location);
                 var versions = LoadVersions(context.Module).ToArray();
                 var update = ProcessStrings(context.Module, versions, s => ProcessVersionString(s, information))
                     .OrAny(ProcessCustomVersion(context.Module, versions, context.BuildTime));

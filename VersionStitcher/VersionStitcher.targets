@@ -5,14 +5,8 @@
     <VersionStitcherPath Condition="$(VersionStitcherPath) == '' Or $(VersionStitcherPath) == '*Undefined*'">$(MSBuildThisFileDirectory)..\VersionStitcher.exe</VersionStitcherPath>
   </PropertyGroup>
 
-  <UsingTask
-      TaskName="VersionStitcherTask"
-      AssemblyFile="$(VersionStitcherPath)" />
-  <Target
-      Name="VersionStitcherTarget"
-      AfterTargets="CoreCompile"
-      >
-    <VersionStitcherTask ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" AssemblyPath="@(IntermediateAssembly)" />
+  <UsingTask TaskName="VersionStitcherTask" AssemblyFile="$(VersionStitcherPath)" />
+  <Target Name="VersionStitcherTarget" AfterTargets="CoreCompile">
+    <VersionStitcherTask AssemblyPath="@(IntermediateAssembly)" />
   </Target>
 </Project>
-
