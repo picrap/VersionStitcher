@@ -17,5 +17,6 @@ namespace VersionStitcher.Information
         public string CommitTimeIso { get; set; }
         public bool IsDirty { get; set; }
         public string IsDirtyLiteral { get; set; }
+        public string CommitTags { get; set; }
     }
 }

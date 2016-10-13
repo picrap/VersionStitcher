@@ -3,10 +3,10 @@
     "Clarius.TransformOnBuild": "1.1.12",
     "LibGit2Sharp": "0.21.0.176",
     "LibGit2Sharp.NativeBinaries": "1.0.114",
-    "StitcherBoy": "0.10.2"
+    "StitcherBoy": "0.10.3"
   },
   "frameworks": {
-    "net46": {}
+    "net45": {}
   },
   "runtimes": {
     "win": {}

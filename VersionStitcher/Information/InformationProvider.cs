@@ -4,6 +4,7 @@
 namespace VersionStitcher.Information
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using LibGit;
@@ -49,8 +50,7 @@ namespace VersionStitcher.Information
         /// <returns></returns>
         private static GitInformation GetGitInformation(string assemblyPath)
         {
-            var directories = new[] { assemblyPath }.Where(p => p != null).Select(Path.GetDirectoryName)
-                .Select(d => string.IsNullOrEmpty(d) ? "." : d);
+            var directories = GetAncestors(assemblyPath);
             using (var repository = GitRepository.TryLoad(directories.ToArray()))
             {
                 if (repository == null)
@@ -66,12 +66,27 @@ namespace VersionStitcher.Information
                 gitInformation.CommitMessage = latestCommit.Message.Trim();
                 gitInformation.CommitAuthor = latestCommit.Author.ToString();
                 gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
-                gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("O");
+                gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
                 var repositoryStatus = repository.Repository.RetrieveStatus();
                 gitInformation.IsDirty = repositoryStatus.IsDirty;
                 gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
+                var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.Name).ToArray();
+                gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.Name));
+
                 FillBuildInformation(gitInformation);
                 return gitInformation;
+            }
+        }
+
+        private static IEnumerable<string> GetAncestors(string file)
+        {
+            for (;;)
+            {
+                file = Path.GetDirectoryName(file);
+                if (file == null)
+                    break;
+
+                yield return file;
             }
         }
     }
