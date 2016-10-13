@@ -20,7 +20,6 @@ build:
   parallel: true
   publish_nuget: false
   publish_nuget_symbols: false
-  verbosity: minimal
 
 artifacts:
   - path: 'VersionStitcher\bin\$(configuration)\*.nupkg'
