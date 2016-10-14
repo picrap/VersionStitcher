@@ -7,6 +7,6 @@
 
   <UsingTask TaskName="VersionStitcherTask" AssemblyFile="$(VersionStitcherPath)" />
   <Target Name="VersionStitcherTarget" AfterTargets="CoreCompile">
-    <VersionStitcherTask AssemblyPath="@(IntermediateAssembly)" />
+    <VersionStitcherTask AssemblyPath="@(IntermediateAssembly)" AssemblyOriginatorKeyFile="$(AssemblyOriginatorKeyFile)" SignAssembly="$(SignAssembly)" />
   </Target>
 </Project>
