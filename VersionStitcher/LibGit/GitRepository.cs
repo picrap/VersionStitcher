@@ -111,16 +111,24 @@ namespace VersionStitcher.LibGit
         {
             if (File.Exists(filePath))
                 return;
-            using (var fileStream = File.Create(filePath))
-                resourceStream.CopyTo(fileStream);
-            _dispose.Add(delegate
+            try
             {
-                try
+                using (var fileStream = File.Create(filePath))
+                    resourceStream.CopyTo(fileStream);
+                _dispose.Add(delegate
                 {
-                    File.Delete(filePath);
-                }
-                catch (UnauthorizedAccessException) { }
-            });
+                    try
+                    {
+                        File.Delete(filePath);
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                    }
+                });
+            }
+            // on some parallel operations, the File.Exist is not enough
+            catch (IOException)
+            { }
         }
 
         /// <summary>
