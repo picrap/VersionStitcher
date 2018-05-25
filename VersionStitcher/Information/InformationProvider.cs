@@ -53,6 +53,7 @@ namespace VersionStitcher.Information
         {
             var directories = GetAncestors(assemblyPath);
 
+            Exception rethrow = null;
             // for some unknown reason, it fails sometimes on CI
             for (int retry = 0; retry < 3; retry++)
             {
@@ -84,13 +85,16 @@ namespace VersionStitcher.Information
                         return gitInformation;
                     }
                 }
-                catch (LibGit2SharpException)
+                catch (LibGit2SharpException e)
                 {
+                    rethrow = e;
                     Thread.Sleep(200);
                 }
             }
 
-            return null;
+            if (rethrow != null)
+                throw rethrow; // funny dude
+            throw new Exception("If you read this message, the programmer did something wrong");
         }
 
         private static IEnumerable<string> GetAncestors(string file)
