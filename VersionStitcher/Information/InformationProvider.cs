@@ -7,6 +7,7 @@ namespace VersionStitcher.Information
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using LibGit;
     using LibGit2Sharp;
 
@@ -51,36 +52,50 @@ namespace VersionStitcher.Information
         private static GitInformation GetGitInformation(string assemblyPath)
         {
             var directories = GetAncestors(assemblyPath);
-            using (var repository = GitRepository.TryLoad(directories.ToArray()))
+
+            // for some unknown reason, it fails sometimes on CI
+            for (int retry = 0; retry < 3; retry++)
             {
-                if (repository == null)
-                    return null;
+                try
+                {
+                    using (var repository = GitRepository.TryLoad(directories.ToArray()))
+                    {
+                        if (repository == null)
+                            return null;
 
-                var gitInformation = new GitInformation();
-                var currentBranch = repository.Repository.Head;
-                gitInformation.BranchName = currentBranch.Name;
-                gitInformation.BranchRemoteName = currentBranch.Remote?.Name;
-                var latestCommit = currentBranch.Commits.First();
-                gitInformation.CommitID = latestCommit.Id.Sha;
-                gitInformation.CommitShortID = latestCommit.Id.Sha.Substring(0, 8);
-                gitInformation.CommitMessage = latestCommit.Message.Trim();
-                gitInformation.CommitAuthor = latestCommit.Author.ToString();
-                gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
-                gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
-                var repositoryStatus = repository.Repository.RetrieveStatus();
-                gitInformation.IsDirty = repositoryStatus.IsDirty;
-                gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
-                var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.Name).ToArray();
-                gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.Name));
+                        var gitInformation = new GitInformation();
+                        var currentBranch = repository.Repository.Head;
+                        gitInformation.BranchName = currentBranch.Name;
+                        gitInformation.BranchRemoteName = currentBranch.Remote?.Name;
+                        var latestCommit = currentBranch.Commits.First();
+                        gitInformation.CommitID = latestCommit.Id.Sha;
+                        gitInformation.CommitShortID = latestCommit.Id.Sha.Substring(0, 8);
+                        gitInformation.CommitMessage = latestCommit.Message.Trim();
+                        gitInformation.CommitAuthor = latestCommit.Author.ToString();
+                        gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
+                        gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
+                        var repositoryStatus = repository.Repository.RetrieveStatus();
+                        gitInformation.IsDirty = repositoryStatus.IsDirty;
+                        gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
+                        var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.Name).ToArray();
+                        gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.Name));
 
-                FillBuildInformation(gitInformation);
-                return gitInformation;
+                        FillBuildInformation(gitInformation);
+                        return gitInformation;
+                    }
+                }
+                catch (LibGit2SharpException)
+                {
+                    Thread.Sleep(200);
+                }
             }
+
+            return null;
         }
 
         private static IEnumerable<string> GetAncestors(string file)
         {
-            for (;;)
+            for (; ; )
             {
                 file = Path.GetDirectoryName(file);
                 if (file == null)
