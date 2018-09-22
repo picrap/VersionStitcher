@@ -53,6 +53,7 @@
   <Import Project="$(SolutionDir)\VersionStitcher\VersionStitcher.targets" />
   <PropertyGroup>
     <PreBuildEvent>copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe"
+
 copy "$(SolutionDir)VersionStitcher\bin\$(ConfigurationName)\VersionStitcher.exe" "$(SolutionDir)VersionStitcher.exe.debugTask"
 </PreBuildEvent>
   </PropertyGroup>

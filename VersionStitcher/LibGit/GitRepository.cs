@@ -143,7 +143,7 @@ namespace VersionStitcher.LibGit
             CreateDirectory(nativeBinariesDirectory);
 
             // find resource
-            const string dllName = "git2-e0902fb.dll";
+            const string dllName = "git2-6311e88.dll";
             var thisAssembly = GetType().Assembly;
             var resourceStream = thisAssembly.GetManifestResourceStream(GetType(), architecture + "." + dllName);
 

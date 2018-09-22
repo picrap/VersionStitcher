@@ -66,8 +66,8 @@ namespace VersionStitcher.Information
 
                         var gitInformation = new GitInformation();
                         var currentBranch = repository.Repository.Head;
-                        gitInformation.BranchName = currentBranch.Name;
-                        gitInformation.BranchRemoteName = currentBranch.Remote?.Name;
+                        gitInformation.BranchName = currentBranch.FriendlyName;
+                        gitInformation.BranchRemoteName = currentBranch.RemoteName;
                         var latestCommit = currentBranch.Commits.First();
                         gitInformation.CommitID = latestCommit.Id.Sha;
                         gitInformation.CommitShortID = latestCommit.Id.Sha.Substring(0, 8);
@@ -78,8 +78,8 @@ namespace VersionStitcher.Information
                         var repositoryStatus = repository.Repository.RetrieveStatus();
                         gitInformation.IsDirty = repositoryStatus.IsDirty;
                         gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
-                        var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.Name).ToArray();
-                        gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.Name));
+                        var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.FriendlyName).ToArray();
+                        gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.FriendlyName));
 
                         FillBuildInformation(gitInformation);
                         return gitInformation;

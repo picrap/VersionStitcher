@@ -9,6 +9,7 @@
     <title><#=Title#></title>
     <authors><#=Company#></authors>
     <owners><#=Company#></owners>
+    <!-- <#=License#> -->
     <licenseUrl><#=LicenseUrl#></licenseUrl>
     <projectUrl>https://github.com/picrap/VersionStitcher</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/picrap/VersionStitcher/master/Icon/VersionStitcher.png</iconUrl>
