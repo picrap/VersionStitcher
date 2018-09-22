@@ -88,7 +88,7 @@ namespace VersionStitcher.Utility
                 if(methodDef.Body.HasVariables)
                 foreach (var variable in methodDef.Body.Variables)
                     targetMethod.Body.Variables.Add(variable);
-                targetMethod.Body.Scope = methodDef.Body.Scope;
+                //targetMethod.Body.Scope = methodDef.Body.Scope;
             }
             targetTypeDef.Methods.Add(targetMethod);
             return targetMethod;

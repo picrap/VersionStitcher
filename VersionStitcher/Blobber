@@ -2,4 +2,4 @@
 #(Release)*: embed
 #*: merge
 LibGit2Sharp: embed
-StitcherBoy: embed
+StitcherBoy: merge
