@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.1.0.205\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.205\build\LibGit2Sharp.NativeBinaries.props')" />
+  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.2.0.306\build\net46\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.2.0.306\build\net46\LibGit2Sharp.NativeBinaries.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VersionStitcher</RootNamespace>
     <AssemblyName>VersionStitcher</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
@@ -48,14 +48,8 @@
     <AssemblyOriginatorKeyFile>Properties\VersionStitcher.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibGit2Sharp, Version=0.24.1.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
-      <HintPath>..\packages\LibGit2Sharp.0.24.1\lib\net40\LibGit2Sharp.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="StitcherBoy, Version=1.1.5.0, Culture=neutral, PublicKeyToken=a3be45b63ddcbf4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\StitcherBoy.1.1.5\lib\net45\StitcherBoy.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
@@ -125,11 +119,11 @@
     <None Include="Properties\ProductInfoValues.tt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\packages\LibGit2Sharp.NativeBinaries.1.0.205\runtimes\win7-x64\native\git2-dd2d538.dll">
-      <Link>LibGit\amd64\git2-dd2d538.dll</Link>
+    <EmbeddedResource Include="..\packages\LibGit2Sharp.NativeBinaries.2.0.306\runtimes\win-x64\native\git2-106a5f2.dll">
+      <Link>LibGit\amd64\git2-106a5f2.dll</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\packages\LibGit2Sharp.NativeBinaries.1.0.205\runtimes\win7-x86\native\git2-dd2d538.dll">
-      <Link>LibGit\x86\git2-dd2d538.dll</Link>
+    <EmbeddedResource Include="..\packages\LibGit2Sharp.NativeBinaries.2.0.306\runtimes\win-x86\native\git2-106a5f2.dll">
+      <Link>LibGit\x86\git2-106a5f2.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -179,8 +173,8 @@ rem copy "$(TargetPath)" "$(TargetDir)$(TargetName).dll"
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Blobber.0.8.5\build\Blobber.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Blobber.0.8.5\build\Blobber.targets'))" />
-    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.205\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.205\build\LibGit2Sharp.NativeBinaries.props'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.2.0.306\build\net46\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.2.0.306\build\net46\LibGit2Sharp.NativeBinaries.props'))" />
+    <Error Condition="!Exists('..\packages\Blobber.0.9.0\build\Blobber.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Blobber.0.9.0\build\Blobber.targets'))" />
   </Target>
-  <Import Project="..\packages\Blobber.0.8.5\build\Blobber.targets" Condition="Exists('..\packages\Blobber.0.8.5\build\Blobber.targets')" />
+  <Import Project="..\packages\Blobber.0.9.0\build\Blobber.targets" Condition="Exists('..\packages\Blobber.0.9.0\build\Blobber.targets')" />
 </Project>
