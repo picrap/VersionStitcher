@@ -1,5 +1,5 @@
 ﻿#(Debug)*: none
 #(Release)*: embed
-#*: merge
+*: none
 LibGit2Sharp: embed
 StitcherBoy: merge
