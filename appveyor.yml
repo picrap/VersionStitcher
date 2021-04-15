@@ -29,4 +29,4 @@ deploy:
   skip_symbols: true
 
 after_test:
-  ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+  ps: Get-ChildItem .\VersionStitcher\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
