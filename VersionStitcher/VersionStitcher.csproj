@@ -1,41 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{78DC845D-47B0-4473-A97B-B262324143C0}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VersionStitcher</RootNamespace>
-    <AssemblyName>VersionStitcher</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net5.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>VersionStitcher</AssemblyTitle>
+    <Description>Injects version from source control information (git) based on explicit text patterns in assembly.</Description>
+    <Copyright>Copyright 2015</Copyright>
+    <Version>1.0.2.1</Version>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Authors>openstore.craponne.fr</Authors>
+    <PackageId>VersionStitcher</PackageId>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/picrap/StitcherBoy/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/picrap/VersionStitcher</PackageProjectUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
@@ -46,57 +31,28 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Properties\VersionStitcher.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+  <PropertyGroup>
+    <!-- Get the Visual Studio version – defaults to 10: -->
+    <!-- Keep the next element all on one line: -->
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TransformOnBuild>true</TransformOnBuild>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
   <ItemGroup>
     <None Include="Blobber" />
-    <Compile Include="Information\BuildInformation.cs" />
-    <Compile Include="Information\GitInformation.cs" />
-    <Compile Include="Information\InformationProvider.cs" />
-    <Compile Include="LibGit\GitRepository.cs" />
-    <Compile Include="Properties\ProductInfo.cs">
+    <Compile Update="Properties\ProductInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductInfo.tt</DependentUpon>
     </Compile>
-    <Compile Include="Utility\LogicalUtility.cs" />
-    <Compile Include="Utility\ModuleUtility.cs" />
-    <Compile Include="Utility\StreamUtility.cs" />
-    <Compile Include="Utility\VersionUtility.cs" />
-    <Compile Include="VersionStitcher.cs" />
-    <Compile Include="VersionStitcher.Custom.cs" />
-    <Compile Include="VersionStitcher.Strings.cs" />
-    <Compile Include="VersionStitcherTask.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Win32Resources\KeyedResource.cs" />
-    <Compile Include="Win32Resources\Serialization\ReadResourceSerializer.cs" />
-    <Compile Include="Win32Resources\Serialization\ResourceSerializer.cs" />
-    <Compile Include="Win32Resources\Serialization\WriteResourceSerializer.cs" />
-    <Compile Include="Win32Resources\SerializedResource.cs" />
-    <Compile Include="Win32Resources\String.cs" />
-    <Compile Include="Win32Resources\StringFileInfo.cs" />
-    <Compile Include="Win32Resources\StringTable.cs" />
-    <Compile Include="Win32Resources\ValidatedKeyedResource.cs" />
-    <Compile Include="Win32Resources\Var.cs" />
-    <Compile Include="Win32Resources\VarFileInfo.cs" />
-    <Compile Include="Win32Resources\VS_FIXEDFILEINFO.cs" />
-    <Compile Include="Win32Resources\VS_VERSIONINFO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
       <Link>README.md</Link>
     </None>
     <None Include="Properties\VersionStitcher.snk" />
-    <None Include="VersionStitcher.nuspec">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>VersionStitcher.tt</DependentUpon>
-    </None>
     <None Include="VersionStitcher.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VersionStitcher.nuspec</LastGenOutput>
@@ -122,62 +78,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Blobber">
-      <Version>0.9.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="Blobber" Version="0.9.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="LibGit2Sharp">
-      <Version>0.24.1</Version>
-    </PackageReference>
-    <PackageReference Include="LibGit2Sharp.NativeBinaries">
-      <Version>1.0.205</Version>
-    </PackageReference>
-    <PackageReference Include="StitcherBoy">
-      <Version>1.3.1</Version>
-    </PackageReference>
+    <PackageReference Include="LibGit2Sharp" Version="0.24.1" />
+    <PackageReference Include="LibGit2Sharp.NativeBinaries" Version="1.0.205" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
+    <PackageReference Include="StitcherBoy" Version="1.5.0-test1" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>rem --- ILMerge ------------------------------------------------------------------------------
-
-rem "$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\VersionStitcher.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)StitcherBoy.dll" "$(TargetDir)LibGit2Sharp.dll"
-
-rem --- NuGet pack ------------------------------------------------------------------------------
-
-if not "$(ConfigurationName)"=="Release" goto :noRelease
-
-echo Packaging for NuGet...
-
-set nuget=nuget.exe
-rem set nuget="$(SolutionDir)\.nuget\NuGet.exe"
-
-rem copy "$(TargetPath)" "$(TargetDir)$(TargetName).dll"
-%25nuget%25 pack "$(ProjectDir)\VersionStitcher.nuspec" -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=$(ConfigurationName) 
-
-:noRelease
-</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rem --- ILMerge ------------------------------------------------------------------------------&#xD;&#xA;&#xD;&#xA;rem &quot;$(ProjectDir)..\Libraries\ilmerge.exe&quot; /keyfile:&quot;$(ProjectDir)Properties\VersionStitcher.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot; &quot;$(TargetDir)StitcherBoy.dll&quot; &quot;$(TargetDir)LibGit2Sharp.dll&quot;&#xD;&#xA;&#xD;&#xA;rem --- NuGet pack ------------------------------------------------------------------------------&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto :noRelease&#xD;&#xA;&#xD;&#xA;echo Packaging for NuGet...&#xD;&#xA;&#xD;&#xA;set nuget=nuget.exe&#xD;&#xA;rem set nuget=&quot;$(SolutionDir)\.nuget\NuGet.exe&quot;&#xD;&#xA;&#xD;&#xA;rem copy &quot;$(TargetPath)&quot; &quot;$(TargetDir)$(TargetName).dll&quot;&#xD;&#xA;%2525nuget%2525 pack &quot;$(ProjectDir)\VersionStitcher.nuspec&quot; -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=$(ConfigurationName) &#xD;&#xA;&#xD;&#xA;:noRelease&#xD;&#xA;" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <!-- Optionally make the import portable across VS versions -->
-  <PropertyGroup>
-    <!-- Get the Visual Studio version – defaults to 10: -->
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <!-- Keep the next element all on one line: -->
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <!-- This is the important line: -->
-  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
-  <PropertyGroup>
-    <TransformOnBuild>true</TransformOnBuild>
-  </PropertyGroup>
 </Project>

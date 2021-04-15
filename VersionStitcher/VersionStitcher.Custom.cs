@@ -26,39 +26,43 @@ namespace VersionStitcher
         {
             const string assemblyTypeName = "Assembly";
             var assemblyTypeDef = moduleDef.Types.SingleOrDefault(t => t.FullName == assemblyTypeName);
-            if (assemblyTypeDef == null)
+            if (assemblyTypeDef is null)
                 return false;
 
-            bool updated = false;
+            return ProcessCustomVersion(assemblyTypeDef, moduleDef, versions, buildTime, assemblyTypeName);
+        }
+
+        private bool ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName)
+        {
             using (var customModule = ModuleUtility.CreateModule())
             {
                 assemblyTypeDef.Copy(customModule);
                 // disabled for now... I need to figure out the problem with PDB
                 moduleDef.Types.Remove(assemblyTypeDef);
                 var customAssembly = customModule.Load();
+                var allTypes = customAssembly.DefinedTypes;
+                foreach (var allType in allTypes)
+                    Console.WriteLine($"Type: {allType.FullName}");
                 var assemblyType = customAssembly.GetType(assemblyTypeName);
                 // first of all, try to get at least a version
                 var version = GetVersion(assemblyType, "GetVersion", buildTime);
-                if (version == null)
+                if (version is null)
                     return false;
-                var literalVersion = version.ToString();
 
+                var literalVersion = version.ToString();
                 // now we can try to get file and product versions
                 // ...files...
                 var literalFileVersion = GetLiteralVersion(assemblyType, "GetFileVersion", buildTime) ?? literalVersion;
-                Version fileVersion;
-                Version.TryParse(literalFileVersion, out fileVersion);
+                Version.TryParse(literalFileVersion, out var fileVersion);
                 // ...product...
                 var literalProductVersion = GetLiteralVersion(assemblyType, "GetProductVersion", buildTime) ?? literalFileVersion;
-                Version productVersion;
-                Version.TryParse(literalProductVersion, out productVersion);
+                Version.TryParse(literalProductVersion, out var productVersion);
 
                 // Assembly version
-                if (moduleDef.Assembly.Version != version)
-                {
+                var updated = moduleDef.Assembly.Version != version;
+                if (updated)
                     moduleDef.Assembly.Version = version;
-                    updated = true;
-                }
+
                 updated = SetVersionString(versions, "Assembly Version", literalVersion) || updated;
 
                 // File version
@@ -70,8 +74,8 @@ namespace VersionStitcher
                 updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion) || updated;
                 updated = SetVersionString(versions, "ProductVersion", literalProductVersion) || updated;
                 updated = versions.Select(v => SetProductVersionDWORD(v, productVersion)).AnyOfAll() || updated;
+                return updated;
             }
-            return updated;
         }
 
         private static bool SetFileVersionDWORD(VS_VERSIONINFO versionInfo, Version version)
@@ -155,7 +159,7 @@ namespace VersionStitcher
         private Version GetVersion(Type type, string methodName, DateTime buildTime)
         {
             var getVersionMethod = type.GetMethod(methodName);
-            if (getVersionMethod == null)
+            if (getVersionMethod is null)
                 return null;
             return InvokeGetVersion(getVersionMethod, buildTime);
         }
@@ -195,7 +199,7 @@ namespace VersionStitcher
         private string GetLiteralVersion(Type type, string methodName, DateTime buildTime)
         {
             var getVersionMethod = type.GetMethod(methodName);
-            if (getVersionMethod == null)
+            if (getVersionMethod is null)
                 return null;
             return InvokeGetLiteralVersion(getVersionMethod, buildTime);
         }

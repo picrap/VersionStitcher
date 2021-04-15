@@ -7,7 +7,6 @@ namespace VersionStitcher.Win32Resources.Serialization
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Text;
 
     public class ReadResourceSerializer : ResourceSerializer, IDisposable
