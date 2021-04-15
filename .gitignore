@@ -201,4 +201,4 @@ VersionStitcher/Properties/ProductInfo.cs
 *.debugTask
 
 project.lock.json
-launchSettinqs.json
+launchSettings.json
