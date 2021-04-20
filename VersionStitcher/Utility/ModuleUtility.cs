@@ -31,11 +31,9 @@ namespace VersionStitcher.Utility
 
         public static byte[] GetModuleBytes(this ModuleDef module)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                module.Write(memoryStream);
-                return memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            module.Write(memoryStream);
+            return memoryStream.ToArray();
         }
 
         public static void Copy(this TypeDef sourceTypeDef, ModuleDef moduleDef)
@@ -85,9 +83,9 @@ namespace VersionStitcher.Utility
                 if (methodDef.Body.HasExceptionHandlers)
                     foreach (var exceptionHandler in methodDef.Body.ExceptionHandlers)
                         methodDef.Body.ExceptionHandlers.Add(exceptionHandler);
-                if(methodDef.Body.HasVariables)
-                foreach (var variable in methodDef.Body.Variables)
-                    targetMethod.Body.Variables.Add(variable);
+                if (methodDef.Body.HasVariables)
+                    foreach (var variable in methodDef.Body.Variables)
+                        targetMethod.Body.Variables.Add(variable);
                 //targetMethod.Body.Scope = methodDef.Body.Scope;
             }
             targetTypeDef.Methods.Add(targetMethod);

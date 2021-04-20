@@ -3,6 +3,7 @@
 branches:
   only:
     - master
+    - net5
 
 version: '{branch}-{build}'
 
