@@ -3,24 +3,20 @@
     <ProjectGuid>{78DC845D-47B0-4473-A97B-B262324143C0}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyTitle>VersionStitcher</AssemblyTitle>
     <Description>Injects version from source control information (git) based on explicit text patterns in assembly.</Description>
     <Copyright>Copyright 2015</Copyright>
-    <Version>1.0.2.1</Version>
+    <Version>1.1</Version>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>openstore.craponne.fr</Authors>
     <PackageId>VersionStitcher</PackageId>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/picrap/StitcherBoy/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/picrap/VersionStitcher</PackageProjectUrl>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
@@ -32,58 +28,36 @@
     <AssemblyOriginatorKeyFile>Properties\VersionStitcher.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <!-- Get the Visual Studio version – defaults to 10: -->
-    <!-- Keep the next element all on one line: -->
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>VersionStitcher.png</PackageIcon>
+    <RepositoryUrl>https://github.com/picrap/VersionStitcher.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup>
-    <TransformOnBuild>true</TransformOnBuild>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
   <ItemGroup>
-    <None Include="Blobber" />
-    <Compile Update="Properties\ProductInfo.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProductInfo.tt</DependentUpon>
-    </Compile>
+    <None Include="..\Icon\VersionStitcher.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
       <Link>README.md</Link>
     </None>
     <None Include="Properties\VersionStitcher.snk" />
-    <None Include="VersionStitcher.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VersionStitcher.nuspec</LastGenOutput>
+    <Content Include="VersionStitcher.targets" Pack="true" PackagePath="tools">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="VersionStitcher.targets">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\ProductInfo.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ProductInfo.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\ProductInfoValues.tt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Libraries\win-x64\native\git2-106a5f2.dll">
-      <Link>LibGit\amd64\git2-106a5f2.dll</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Libraries\win-x86\native\git2-106a5f2.dll">
-      <Link>LibGit\x86\git2-106a5f2.dll</Link>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="LibGit2Sharp.NativeBinaries" Version="2.0.306" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
-    <PackageReference Include="StitcherBoy" Version="1.5.0" />
+    <PackageReference Include="StitcherBoy" Version="2.0.0-test3" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rem --- ILMerge ------------------------------------------------------------------------------&#xD;&#xA;&#xD;&#xA;rem &quot;$(ProjectDir)..\Libraries\ilmerge.exe&quot; /keyfile:&quot;$(ProjectDir)Properties\VersionStitcher.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot; &quot;$(TargetDir)StitcherBoy.dll&quot; &quot;$(TargetDir)LibGit2Sharp.dll&quot;&#xD;&#xA;&#xD;&#xA;rem --- NuGet pack ------------------------------------------------------------------------------&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto :noRelease&#xD;&#xA;&#xD;&#xA;echo Packaging for NuGet...&#xD;&#xA;&#xD;&#xA;set nuget=nuget.exe&#xD;&#xA;rem set nuget=&quot;$(SolutionDir)\.nuget\NuGet.exe&quot;&#xD;&#xA;&#xD;&#xA;rem copy &quot;$(TargetPath)&quot; &quot;$(TargetDir)$(TargetName).dll&quot;&#xD;&#xA;%nuget% pack &quot;$(ProjectDir)\VersionStitcher.nuspec&quot; -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=$(ConfigurationName) &#xD;&#xA;&#xD;&#xA;:noRelease&#xD;&#xA;" />
+    <Exec Command="PostBuild.bat &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot;" />
   </Target>
 </Project>

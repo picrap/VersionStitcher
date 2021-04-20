@@ -25,14 +25,6 @@ namespace VersionStitcher.LibGit
         private readonly IList<Action> _dispose = new List<Action>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GitRepository" /> class.
-        /// </summary>
-        public GitRepository()
-        {
-            DeployNativeBinaries();
-        }
-
-        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -129,33 +121,6 @@ namespace VersionStitcher.LibGit
             // on some parallel operations, the File.Exist is not enough
             catch (IOException)
             { }
-        }
-
-        /// <summary>
-        /// Deploys the native binaries... If necessary
-        /// </summary>
-        private void DeployNativeBinaries()
-        {
-            var architecture = Environment.Is64BitProcess ? "amd64" : "x86";
-
-            // create temp folder
-            var nativeBinariesDirectory = Path.Combine(Path.GetTempPath(), $"GitNativeBinaries-{architecture}");
-            CreateDirectory(nativeBinariesDirectory);
-
-            // find resource
-            const string dllName = "git2-106a5f2.dll";
-            var thisAssembly = GetType().Assembly;
-            var resourceStream = thisAssembly.GetManifestResourceStream(GetType(), architecture + "." + dllName);
-
-            // open resource and create file
-            var filePath = Path.Combine(nativeBinariesDirectory, dllName);
-            CreateFile(filePath, resourceStream);
-
-            // update env path
-            const string pathVariable = "path";
-            var environmentPath = Environment.GetEnvironmentVariable(pathVariable);
-            Environment.SetEnvironmentVariable(pathVariable, nativeBinariesDirectory + ";" + environmentPath);
-            _dispose.Add(() => Environment.SetEnvironmentVariable(pathVariable, environmentPath));
         }
     }
 }
