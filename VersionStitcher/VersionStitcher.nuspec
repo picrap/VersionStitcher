@@ -11,6 +11,7 @@
     <description>$description$</description>
     <copyright>$copyright$</copyright>
     <repository type="git" url="https://github.com/picrap/VersionStitcher.git" />
+    <developmentDependency>true</developmentDependency>
   </metadata>
   <files>
     <file src="..\Icon\VersionStitcher.png" target="" />
