@@ -9,7 +9,7 @@
     <AssemblyTitle>VersionStitcher</AssemblyTitle>
     <Description>Injects version from source control information (git) based on explicit text patterns in assembly.</Description>
     <Copyright>Copyright 2015</Copyright>
-    <Version>1.1-test1</Version>
+    <Version>1.1-test3</Version>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>openstore.craponne.fr</Authors>
     <PackageId>VersionStitcher</PackageId>
@@ -21,13 +21,9 @@
   <PropertyGroup>
     <IsTool>true</IsTool>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ContentTargetFolders>tools</ContentTargetFolders>
+    <NuspecProperties>id=$(AssemblyTitle);version=$(Version);author=$(Authors);description=$(Description);copyright=$(Copyright);configuration=$(Configuration)</NuspecProperties>
+    <NuspecFile>VersionStitcher.nuspec</NuspecFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="$(OutputPath)..\net5.0\*.*" Pack="true" PackagePath="tools/net5.0" />
-    <Content Include="$(OutputPath)..\net5.0\runtimes\win-x86\**\*.*" Pack="true" PackagePath="tools/net5.0/runtimes/win-x86" />
-    <Content Include="$(OutputPath)..\net5.0\runtimes\win-x64\**\*.*" Pack="true" PackagePath="tools/net5.0/runtimes/win-x64" />
-  </ItemGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
