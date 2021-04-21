@@ -39,13 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication2", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNet5", "Test\TestNet5\TestNet5.csproj", "{E0CC1484-DAB7-4E1E-BFE8-AC72074975B5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E323EFA7-6101-4F93-B27B-5F3EF9008F6B}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		.gitmodules = .gitmodules
-		appveyor.yml = appveyor.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
