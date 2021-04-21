@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <icon>VersionStitcher.png</icon>
+    <projectUrl>https://github.com/picrap/VersionStitcher</projectUrl>
+    <description>$description$</description>
+    <copyright>$copyright$</copyright>
+    <repository type="git" url="https://github.com/picrap/VersionStitcher.git" />
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <file src="..\Icon\VersionStitcher.png" target="" />
+    <file src="VersionStitcher.targets" target="build" />
+    <file src="bin\$configuration$\**\*.*" target="tools" />
+  </files>
+</package>

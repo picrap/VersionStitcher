@@ -20,6 +20,8 @@ namespace VersionStitcher
 
     public partial class VersionStitcher : AssemblyStitcher
     {
+        public override string Name => "VersionStitcher";
+
         /// <summary>
         /// Gets the information provider.
         /// </summary>
@@ -47,8 +49,9 @@ namespace VersionStitcher
             {
                 var information = InformationProvider.GetInformation(context.Module.Location);
                 var versions = LoadVersions(context.Module).ToArray();
+                var buildTime = DateTime.UtcNow; //context.BuildTime;
                 var update = ProcessStrings(context.Module, versions, s => ProcessVersionString(s, information))
-                    .OrAny(ProcessCustomVersion(context.Module, versions, context.BuildTime));
+                    .OrAny(ProcessCustomVersion(context.Module, versions, buildTime));
                 if (update)
                     SaveVersions(context.Module, versions);
                 return update;

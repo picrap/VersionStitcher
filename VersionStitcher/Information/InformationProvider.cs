@@ -59,31 +59,29 @@ namespace VersionStitcher.Information
             {
                 try
                 {
-                    using (var repository = GitRepository.TryLoad(directories.ToArray()))
-                    {
-                        if (repository == null)
-                            return null;
+                    using var repository = GitRepository.TryLoad(directories.ToArray());
+                    if (repository is null)
+                        return null;
 
-                        var gitInformation = new GitInformation();
-                        var currentBranch = repository.Repository.Head;
-                        gitInformation.BranchName = currentBranch.FriendlyName;
-                        gitInformation.BranchRemoteName = currentBranch.RemoteName;
-                        var latestCommit = currentBranch.Commits.First();
-                        gitInformation.CommitID = latestCommit.Id.Sha;
-                        gitInformation.CommitShortID = latestCommit.Id.Sha.Substring(0, 8);
-                        gitInformation.CommitMessage = latestCommit.Message.Trim();
-                        gitInformation.CommitAuthor = latestCommit.Author.ToString();
-                        gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
-                        gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
-                        var repositoryStatus = repository.Repository.RetrieveStatus();
-                        gitInformation.IsDirty = repositoryStatus.IsDirty;
-                        gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
-                        var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.FriendlyName).ToArray();
-                        gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.FriendlyName));
+                    var gitInformation = new GitInformation();
+                    var currentBranch = repository.Repository.Head;
+                    gitInformation.BranchName = currentBranch.FriendlyName;
+                    gitInformation.BranchRemoteName = currentBranch.RemoteName;
+                    var latestCommit = currentBranch.Commits.First();
+                    gitInformation.CommitID = latestCommit.Id.Sha;
+                    gitInformation.CommitShortID = latestCommit.Id.Sha.Substring(0, 8);
+                    gitInformation.CommitMessage = latestCommit.Message.Trim();
+                    gitInformation.CommitAuthor = latestCommit.Author.ToString();
+                    gitInformation.CommitTime = latestCommit.Author.When.LocalDateTime;
+                    gitInformation.CommitTimeIso = gitInformation.CommitTime.ToString("o");
+                    var repositoryStatus = repository.Repository.RetrieveStatus();
+                    gitInformation.IsDirty = repositoryStatus.IsDirty;
+                    gitInformation.IsDirtyLiteral = repositoryStatus.IsDirty ? "dirty" : "";
+                    var tags = repository.Repository.Tags.Where(t => t.Target.Id == latestCommit.Id).OrderBy(t => t.FriendlyName).ToArray();
+                    gitInformation.CommitTags = string.Join(" ", tags.Select(t => t.FriendlyName));
 
-                        FillBuildInformation(gitInformation);
-                        return gitInformation;
-                    }
+                    FillBuildInformation(gitInformation);
+                    return gitInformation;
                 }
                 catch (LibGit2SharpException e)
                 {
@@ -92,7 +90,7 @@ namespace VersionStitcher.Information
                 }
             }
 
-            if (rethrow != null)
+            if (rethrow is not null)
                 throw rethrow; // funny dude
             throw new Exception("If you read this message, the programmer did something wrong");
         }
@@ -102,7 +100,7 @@ namespace VersionStitcher.Information
             for (; ; )
             {
                 file = Path.GetDirectoryName(file);
-                if (file == null)
+                if (file is null)
                     break;
 
                 yield return file;
