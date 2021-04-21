@@ -11,19 +11,10 @@
     <description>$description$</description>
     <copyright>$copyright$</copyright>
     <repository type="git" url="https://github.com/picrap/VersionStitcher.git" />
-    <dependencies>
-      <group targetFramework="net5.0">
-        <dependency id="LibGit2Sharp" version="0.26.2" exclude="Build,Analyzers" />
-        <dependency id="LibGit2Sharp.NativeBinaries" version="2.0.306" exclude="Build,Analyzers" />
-        <dependency id="StitcherBoy" version="2.0.0-test3" exclude="Build,Analyzers" />
-      </group>
-    </dependencies>
   </metadata>
   <files>
     <file src="..\Icon\VersionStitcher.png" target="" />
-    <file src="VersionStitcher.targets" target="tools" />
+    <file src="VersionStitcher.targets" target="build" />
     <file src="bin\$configuration$\**\*.*" target="tools" />
-    <!--<file src="$(OutputPath)..\net5.0\runtimes\win-x86\**\*.*" target="tools/net5.0/runtimes/win-x86" />
-    <file src="$(OutputPath)..\net5.0\runtimes\win-x64\**\*.*" target="tools/net5.0/runtimes/win-x64" />-->
   </files>
 </package>
