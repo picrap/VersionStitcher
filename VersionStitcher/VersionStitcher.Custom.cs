@@ -34,48 +34,46 @@ namespace VersionStitcher
 
         private bool ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName)
         {
-            using (var customModule = ModuleUtility.CreateModule())
-            {
-                assemblyTypeDef.Copy(customModule);
-                // disabled for now... I need to figure out the problem with PDB
-                moduleDef.Types.Remove(assemblyTypeDef);
-                var customAssembly = customModule.Load();
-                var allTypes = customAssembly.DefinedTypes;
-                foreach (var allType in allTypes)
-                    Console.WriteLine($"Type: {allType.FullName}");
-                var assemblyType = customAssembly.GetType(assemblyTypeName);
-                // first of all, try to get at least a version
-                var version = GetVersion(assemblyType, "GetVersion", buildTime);
-                if (version is null)
-                    return false;
+            using var customModule = ModuleUtility.CreateModule();
+            assemblyTypeDef.Copy(customModule);
+            // disabled for now... I need to figure out the problem with PDB
+            moduleDef.Types.Remove(assemblyTypeDef);
+            var customAssembly = customModule.Load();
+            var allTypes = customAssembly.DefinedTypes;
+            foreach (var allType in allTypes)
+                Console.WriteLine($"Type: {allType.FullName}");
+            var assemblyType = customAssembly.GetType(assemblyTypeName);
+            // first of all, try to get at least a version
+            var version = GetVersion(assemblyType, "GetVersion", buildTime);
+            if (version is null)
+                return false;
 
-                var literalVersion = version.ToString();
-                // now we can try to get file and product versions
-                // ...files...
-                var literalFileVersion = GetLiteralVersion(assemblyType, "GetFileVersion", buildTime) ?? literalVersion;
-                Version.TryParse(literalFileVersion, out var fileVersion);
-                // ...product...
-                var literalProductVersion = GetLiteralVersion(assemblyType, "GetProductVersion", buildTime) ?? literalFileVersion;
-                Version.TryParse(literalProductVersion, out var productVersion);
+            var literalVersion = version.ToString();
+            // now we can try to get file and product versions
+            // ...files...
+            var literalFileVersion = GetLiteralVersion(assemblyType, "GetFileVersion", buildTime) ?? literalVersion;
+            Version.TryParse(literalFileVersion, out var fileVersion);
+            // ...product...
+            var literalProductVersion = GetLiteralVersion(assemblyType, "GetProductVersion", buildTime) ?? literalFileVersion;
+            Version.TryParse(literalProductVersion, out var productVersion);
 
-                // Assembly version
-                var updated = moduleDef.Assembly.Version != version;
-                if (updated)
-                    moduleDef.Assembly.Version = version;
+            // Assembly version
+            var updated = moduleDef.Assembly.Version != version;
+            if (updated)
+                moduleDef.Assembly.Version = version;
 
-                updated = SetVersionString(versions, "Assembly Version", literalVersion) || updated;
+            updated = SetVersionString(versions, "Assembly Version", literalVersion) || updated;
 
-                // File version
-                updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyFileVersionAttribute), literalFileVersion) || updated;
-                updated = SetVersionString(versions, "FileVersion", literalFileVersion) || updated;
-                updated = versions.Select(v => SetFileVersionDWORD(v, fileVersion)).AnyOfAll() || updated;
+            // File version
+            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyFileVersionAttribute), literalFileVersion) || updated;
+            updated = SetVersionString(versions, "FileVersion", literalFileVersion) || updated;
+            updated = versions.Select(v => SetFileVersionDWORD(v, fileVersion)).AnyOfAll() || updated;
 
-                // Product version
-                updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion) || updated;
-                updated = SetVersionString(versions, "ProductVersion", literalProductVersion) || updated;
-                updated = versions.Select(v => SetProductVersionDWORD(v, productVersion)).AnyOfAll() || updated;
-                return updated;
-            }
+            // Product version
+            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion) || updated;
+            updated = SetVersionString(versions, "ProductVersion", literalProductVersion) || updated;
+            updated = versions.Select(v => SetProductVersionDWORD(v, productVersion)).AnyOfAll() || updated;
+            return updated;
         }
 
         private static bool SetFileVersionDWORD(VS_VERSIONINFO versionInfo, Version version)
@@ -118,7 +116,7 @@ namespace VersionStitcher
         private static bool SetVersionString(StringTable stringTable, string versionName, string value)
         {
             var matchingString = stringTable.Children.SingleOrDefault(s => s.szKey == versionName);
-            if (matchingString != null)
+            if (matchingString is not null)
             {
                 if (matchingString.Value == value)
                     return false;
@@ -137,22 +135,20 @@ namespace VersionStitcher
         private static bool SetAssemblyAttribute(ModuleDef moduleDef, Type attributeType, string value)
         {
             var attributeAssemblyFileName = attributeType.Module.FullyQualifiedName;
-            using (var attributeModule = ModuleDefMD.Load(attributeAssemblyFileName))
+            using var attributeModule = ModuleDefMD.Load(attributeAssemblyFileName);
+            var attributeTypeRef = moduleDef.Import(attributeType);
+            var attributeTypeDef = attributeModule.GetTypes().Single(t => t.FullName == attributeTypeRef.FullName);
+            var existingAttribute = moduleDef.Assembly.CustomAttributes.SingleOrDefault(t => t.TypeFullName == attributeTypeDef.FullName);
+            if (existingAttribute != null)
             {
-                var attributeTypeRef = moduleDef.Import(attributeType);
-                var attributeTypeDef = attributeModule.GetTypes().Single(t => t.FullName == attributeTypeRef.FullName);
-                var existingAttribute = moduleDef.Assembly.CustomAttributes.SingleOrDefault(t => t.TypeFullName == attributeTypeDef.FullName);
-                if (existingAttribute != null)
-                {
-                    // if it exists and is already initialized with the same value, then no need to change it
-                    if (((UTF8String)existingAttribute.ConstructorArguments[0].Value).String == value)
-                        return false;
-                    moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
-                }
-                var ctor = moduleDef.Import(attributeTypeDef.FindConstructors().Single());
-                var stringTypeSig = moduleDef.Import(typeof(string)).ToTypeSig();
-                moduleDef.Assembly.CustomAttributes.Add(new CustomAttribute(ctor, new[] { new CAArgument(stringTypeSig, new UTF8String(value)) }));
+                // if it exists and is already initialized with the same value, then no need to change it
+                if (((UTF8String)existingAttribute.ConstructorArguments[0].Value).String == value)
+                    return false;
+                moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
             }
+            var ctor = moduleDef.Import(attributeTypeDef.FindConstructors().Single());
+            var stringTypeSig = moduleDef.Import(typeof(string)).ToTypeSig();
+            moduleDef.Assembly.CustomAttributes.Add(new CustomAttribute(ctor, new[] { new CAArgument(stringTypeSig, new UTF8String(value)) }));
             return true;
         }
 
