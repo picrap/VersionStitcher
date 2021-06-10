@@ -5,6 +5,7 @@
     <TargetFramework>net46</TargetFramework>
     <LangVersion>9</LangVersion>
     <SignAssembly>false</SignAssembly>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

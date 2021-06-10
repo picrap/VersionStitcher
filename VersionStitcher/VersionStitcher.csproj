@@ -9,7 +9,7 @@
     <AssemblyTitle>VersionStitcher</AssemblyTitle>
     <Description>Injects version from source control information (git) based on explicit text patterns in assembly.</Description>
     <Copyright>Copyright 2015</Copyright>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>openstore.craponne.fr</Authors>
     <PackageId>VersionStitcher</PackageId>
@@ -61,8 +61,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-    <PackageReference Include="LibGit2Sharp.NativeBinaries" Version="2.0.306" />
-    <PackageReference Include="StitcherBoy" Version="2.0.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0096" />
+    <PackageReference Include="LibGit2Sharp.NativeBinaries" Version="2.0.312" />
+    <PackageReference Include="StitcherBoy" Version="2.0.1" />
   </ItemGroup>
 </Project>

@@ -24,20 +24,26 @@ namespace VersionStitcher
         /// <returns></returns>
         private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime)
         {
-            const string assemblyTypeName = "Assembly";
-            var assemblyTypeDef = moduleDef.Types.SingleOrDefault(t => t.FullName == assemblyTypeName);
-            if (assemblyTypeDef is null)
-                return false;
-
-            return ProcessCustomVersion(assemblyTypeDef, moduleDef, versions, buildTime, assemblyTypeName);
+            return ProcessCustomVersion(moduleDef, versions, buildTime, "Assembly", false)
+            || ProcessCustomVersion(moduleDef, versions, buildTime, "AssemblyVersion", true);
         }
 
-        private bool ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName)
+        private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime,
+            string assemblyTypeName, bool keepVersionCode)
+        {
+            var assemblyTypeDef = moduleDef.Types.SingleOrDefault(t => t.FullName == assemblyTypeName);
+            if (assemblyTypeDef is not null)
+                return ProcessCustomVersion(assemblyTypeDef, moduleDef, versions, buildTime, assemblyTypeName, keepVersionCode);
+            return false;
+        }
+
+        private bool ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName, bool keepVersionCode)
         {
             using var customModule = ModuleUtility.CreateModule();
             assemblyTypeDef.Copy(customModule);
             // disabled for now... I need to figure out the problem with PDB
-            moduleDef.Types.Remove(assemblyTypeDef);
+            if (!keepVersionCode)
+                moduleDef.Types.Remove(assemblyTypeDef);
             var customAssembly = customModule.Load();
             var allTypes = customAssembly.DefinedTypes;
             foreach (var allType in allTypes)
@@ -139,7 +145,7 @@ namespace VersionStitcher
             var attributeTypeRef = moduleDef.Import(attributeType);
             var attributeTypeDef = attributeModule.GetTypes().Single(t => t.FullName == attributeTypeRef.FullName);
             var existingAttribute = moduleDef.Assembly.CustomAttributes.SingleOrDefault(t => t.TypeFullName == attributeTypeDef.FullName);
-            if (existingAttribute != null)
+            if (existingAttribute is not null)
             {
                 // if it exists and is already initialized with the same value, then no need to change it
                 if (((UTF8String)existingAttribute.ConstructorArguments[0].Value).String == value)

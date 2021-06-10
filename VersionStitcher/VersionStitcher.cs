@@ -63,7 +63,7 @@ namespace VersionStitcher
         private static IEnumerable<VS_VERSIONINFO> LoadVersions(ModuleDefMD moduleDef)
         {
             var resourceDirectory = moduleDef.Metadata.PEImage.Win32Resources.Root.FindDirectory(new ResourceName(16));
-            if (resourceDirectory == null)
+            if (resourceDirectory is null)
                 yield break;
             foreach (var resourceEntry in resourceDirectory.Directories)
             {
@@ -81,7 +81,7 @@ namespace VersionStitcher
         {
             var versionResourceName = new ResourceName(16);
             var resourceDirectory = moduleDef.Metadata.PEImage.Win32Resources.Root.FindDirectory(versionResourceName);
-            if (resourceDirectory == null)
+            if (resourceDirectory is null)
             {
                 resourceDirectory = new ResourceDirectoryUser(versionResourceName);
                 moduleDef.Metadata.PEImage.Win32Resources.Root.Directories.Add(resourceDirectory);
@@ -90,19 +90,17 @@ namespace VersionStitcher
             foreach (var version in versions)
             {
                 var resourceEntry = (ResourceDirectoryUser)resourceDirectory.FindDirectory(version.DirectoryName);
-                if (resourceEntry == null)
+                if (resourceEntry is null)
                 {
                     resourceEntry = new ResourceDirectoryUser(version.DirectoryName);
                     resourceDirectory.Directories.Add(resourceEntry);
                 }
 
-                using (var memoryStream = new MemoryStream())
-                {
-                    ResourceSerializer.Serialize(version, memoryStream);
-                    var versionBytes = memoryStream.ToArray();
-                    var versionEntry = new ResourceData(version.DataName, ByteArrayDataReaderFactory.Create(versionBytes, version.szKey), 0, (uint)versionBytes.Length);
-                    resourceEntry.Data.Add(versionEntry);
-                }
+                using var memoryStream = new MemoryStream();
+                ResourceSerializer.Serialize(version, memoryStream);
+                var versionBytes = memoryStream.ToArray();
+                var versionEntry = new ResourceData(version.DataName, ByteArrayDataReaderFactory.Create(versionBytes, version.szKey), 0, (uint)versionBytes.Length);
+                resourceEntry.Data.Add(versionEntry);
             }
         }
     }
