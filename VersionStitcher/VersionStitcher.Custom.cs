@@ -25,19 +25,20 @@ namespace VersionStitcher
         private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime)
         {
             return ProcessCustomVersion(moduleDef, versions, buildTime, "Assembly", false)
-            || ProcessCustomVersion(moduleDef, versions, buildTime, "AssemblyVersion", true);
+                   ?? ProcessCustomVersion(moduleDef, versions, buildTime, "AssemblyVersion", true)
+                   ?? false;
         }
 
-        private bool ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime,
+        private bool? ProcessCustomVersion(ModuleDefMD moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime,
             string assemblyTypeName, bool keepVersionCode)
         {
             var assemblyTypeDef = moduleDef.Types.SingleOrDefault(t => t.FullName == assemblyTypeName);
-            if (assemblyTypeDef is not null)
-                return ProcessCustomVersion(assemblyTypeDef, moduleDef, versions, buildTime, assemblyTypeName, keepVersionCode);
-            return false;
+            if (assemblyTypeDef is null)
+                return null;
+            return ProcessCustomVersion(assemblyTypeDef, moduleDef, versions, buildTime, assemblyTypeName, keepVersionCode);
         }
 
-        private bool ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName, bool keepVersionCode)
+        private bool? ProcessCustomVersion(TypeDef assemblyTypeDef, ModuleDef moduleDef, IList<VS_VERSIONINFO> versions, DateTime buildTime, string assemblyTypeName, bool keepVersionCode)
         {
             using var customModule = ModuleUtility.CreateModule();
             assemblyTypeDef.Copy(customModule);
@@ -46,13 +47,13 @@ namespace VersionStitcher
                 moduleDef.Types.Remove(assemblyTypeDef);
             var customAssembly = customModule.Load();
             var allTypes = customAssembly.DefinedTypes;
-            foreach (var allType in allTypes)
-                Console.WriteLine($"Type: {allType.FullName}");
+            //foreach (var allType in allTypes)
+            //    Console.WriteLine($"Type: {allType.FullName}");
             var assemblyType = customAssembly.GetType(assemblyTypeName);
             // first of all, try to get at least a version
             var version = GetVersion(assemblyType, "GetVersion", buildTime);
             if (version is null)
-                return false;
+                return null;
 
             var literalVersion = version.ToString();
             // now we can try to get file and product versions
