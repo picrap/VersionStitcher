@@ -149,12 +149,15 @@ namespace VersionStitcher
             if (existingAttribute is not null)
             {
                 // if it exists and is already initialized with the same value, then no need to change it
-                if (((UTF8String)existingAttribute.ConstructorArguments[0].Value).String == value)
+                var existingAttributeConstructorArgument = existingAttribute.ConstructorArguments[0];
+                if (((UTF8String)existingAttributeConstructorArgument.Value).String == value)
                     return false;
-                moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
+                existingAttributeConstructorArgument.Value = new UTF8String(value);
+                return true;
+                //moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
             }
             var ctor = moduleDef.Import(attributeTypeDef.FindConstructors().Single());
-            var stringTypeSig = moduleDef.Import(typeof(string)).ToTypeSig();
+            var stringTypeSig = moduleDef.CorLibTypes.String;
             moduleDef.Assembly.CustomAttributes.Add(new CustomAttribute(ctor, new[] { new CAArgument(stringTypeSig, new UTF8String(value)) }));
             return true;
         }
