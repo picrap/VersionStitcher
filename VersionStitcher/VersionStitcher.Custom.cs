@@ -46,9 +46,6 @@ namespace VersionStitcher
             if (!keepVersionCode)
                 moduleDef.Types.Remove(assemblyTypeDef);
             var customAssembly = customModule.Load();
-            var allTypes = customAssembly.DefinedTypes;
-            //foreach (var allType in allTypes)
-            //    Console.WriteLine($"Type: {allType.FullName}");
             var assemblyType = customAssembly.GetType(assemblyTypeName);
             // first of all, try to get at least a version
             var version = GetVersion(assemblyType, "GetVersion", buildTime);
