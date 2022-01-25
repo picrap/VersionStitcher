@@ -72,12 +72,12 @@ namespace VersionStitcher
             updated = SetVersionString(versions, "Assembly Version", literalVersion) || updated;
 
             // File version
-            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyFileVersionAttribute), literalFileVersion) || updated;
+            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyFileVersionAttribute), literalFileVersion, true) || updated;
             updated = SetVersionString(versions, "FileVersion", literalFileVersion) || updated;
             updated = versions.Select(v => SetFileVersionDWORD(v, fileVersion)).AnyOfAll() || updated;
 
             // Product version
-            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion) || updated;
+            updated = SetAssemblyAttribute(moduleDef, typeof(AssemblyInformationalVersionAttribute), literalProductVersion, false) || updated;
             updated = SetVersionString(versions, "ProductVersion", literalProductVersion) || updated;
             updated = versions.Select(v => SetProductVersionDWORD(v, productVersion)).AnyOfAll() || updated;
             return updated;
@@ -139,7 +139,7 @@ namespace VersionStitcher
             return true;
         }
 
-        private static bool SetAssemblyAttribute(ModuleDef moduleDef, Type attributeType, string value)
+        private static bool SetAssemblyAttribute(ModuleDef moduleDef, Type attributeType, string value, bool mandatory)
         {
             var attributeAssemblyFileName = attributeType.Module.FullyQualifiedName;
             using var attributeModule = ModuleDefMD.Load(attributeAssemblyFileName);
@@ -154,8 +154,11 @@ namespace VersionStitcher
                     return false;
                 existingAttributeConstructorArgument.Value = new UTF8String(value);
                 return true;
-                //moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
             }
+
+            if (!mandatory)
+                return false;
+
             var ctor = moduleDef.Import(attributeTypeDef.FindConstructors().Single());
             var stringTypeSig = moduleDef.CorLibTypes.String;
             moduleDef.Assembly.CustomAttributes.Add(new CustomAttribute(ctor, new[] { new CAArgument(stringTypeSig, new UTF8String(value)) }));
