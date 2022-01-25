@@ -164,7 +164,7 @@ namespace VersionStitcher
 
         private Version GetVersion(Type type, string methodName, DateTime buildTime)
         {
-            var getVersionMethod = type.GetMethod(methodName);
+            var getVersionMethod = type?.GetMethod(methodName);
             if (getVersionMethod is null)
                 return null;
             return InvokeGetVersion(getVersionMethod, buildTime);
