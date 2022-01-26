@@ -149,7 +149,8 @@ namespace VersionStitcher
                 var existingAttributeConstructorArgument = existingAttribute.ConstructorArguments[0];
                 if (((UTF8String)existingAttributeConstructorArgument.Value).String == value)
                     return false;
-                existingAttributeConstructorArgument.Value = new UTF8String(value);
+                moduleDef.Assembly.CustomAttributes.Remove(existingAttribute);
+                moduleDef.Assembly.CustomAttributes.Add(new CustomAttribute(existingAttribute.Constructor, new[] { new CAArgument(existingAttributeConstructorArgument.Type, new UTF8String(value)) }));
                 return true;
             }
 
