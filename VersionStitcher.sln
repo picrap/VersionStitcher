@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersionStitcher", "VersionStitcher\VersionStitcher.csproj", "{78DC845D-47B0-4473-A97B-B262324143C0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{49A55764-14CE-4186-AF3E-DD2AB4FC50C4} = {49A55764-14CE-4186-AF3E-DD2AB4FC50C4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "Test\TestApplication\TestApplication.csproj", "{49A55764-14CE-4186-AF3E-DD2AB4FC50C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication", "Test\TestApplication\TestApplication.csproj", "{49A55764-14CE-4186-AF3E-DD2AB4FC50C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication", "Test\TaskTestApplication\TaskTestApplication.csproj", "{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTestApplication", "Test\TaskTestApplication\TaskTestApplication.csproj", "{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{78DC845D-47B0-4473-A97B-B262324143C0} = {78DC845D-47B0-4473-A97B-B262324143C0}
 	EndProjectSection
@@ -32,12 +32,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{09C2601B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersionStitcherTest", "Test\VersionStitcherTest\VersionStitcherTest.csproj", "{633DA65B-DB47-4B16-B7F1-BFCC442C68D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTestApplication2", "Test\TaskTestApplication2\TaskTestApplication2.csproj", "{85EEEAC7-E2F1-4AAE-991C-0F7583AB2B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTestApplication2", "Test\TaskTestApplication2\TaskTestApplication2.csproj", "{85EEEAC7-E2F1-4AAE-991C-0F7583AB2B8B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B} = {85EEEAC6-E2F1-4AAE-991C-0F7583AB2B8B}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNet5", "Test\TestNet5\TestNet5.csproj", "{E0CC1484-DAB7-4E1E-BFE8-AC72074975B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A6D9B8A-92EB-4BCD-9397-23F375307119}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
