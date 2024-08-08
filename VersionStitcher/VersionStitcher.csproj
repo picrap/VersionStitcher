@@ -9,7 +9,7 @@
     <AssemblyTitle>VersionStitcher</AssemblyTitle>
     <Description>Injects version from source control information (git) based on explicit text patterns in assembly.</Description>
     <Copyright>Copyright 2015-…</Copyright>
-    <Version>1.1.12</Version>
+    <Version>1.1.13</Version>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>openstore.craponne.fr</Authors>
     <PackageId>VersionStitcher</PackageId>

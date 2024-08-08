@@ -6,7 +6,7 @@
 			<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\net48\VersionStitcher.exe"</VersionStitcherTool>
 			<!--<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\net5.0\VersionStitcher.exe"</VersionStitcherTool>
 			<VersionStitcherTool Condition="'$(TargetFramework)' == 'net6.0'">"$(MSBuildThisFileDirectory)..\tools\$(TargetFramework)\VersionStitcher.exe"</VersionStitcherTool>-->
-			<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\net6.0\VersionStitcher.exe"</VersionStitcherTool>
+			<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\$(TargetFramework)\VersionStitcher.exe"</VersionStitcherTool>
 		</PropertyGroup>
 
 		<Exec Command='"$(VersionStitcherTool)" AssemblyPath="@(IntermediateAssembly)" AssemblyOriginatorKeyFile="$(AssemblyOriginatorKeyFile)" SignAssembly="$(SignAssembly)"' />
