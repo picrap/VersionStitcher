@@ -31,7 +31,7 @@ Pattern | Value
 `{Version.CommitTime}` | Commit time
 `{Version.CommitTimeIso}` | Commit time, ISO 8601 format
 `{Version.CommitTags}` | Name of all tags related to this commit, if any, ordered by name, separated by space
-`{Version.IsDirty}` | Literal boolean indicating wheter changes are pending
+`{Version.IsDirty}` | Literal boolean indicating whether changes are pending
 `{Version.IsDirtyLiteral}` | "" or "dirty", depending on the `IsDirty` value
 
 There is also the special command `{Version.Help}` which displays all available commands and their values.
