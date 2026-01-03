@@ -55,7 +55,6 @@ namespace VersionStitcher.LibGit
             }
             gitRepository.Dispose();
             return null;
-
         }
 
         /// <summary>
@@ -75,52 +74,6 @@ namespace VersionStitcher.LibGit
                 }
                 catch (IOException) { }
             });
-        }
-
-        /// <summary>
-        /// Creates the directory.
-        /// </summary>
-        /// <param name="baseDirectory">The base directory.</param>
-        /// <param name="subParts">The sub parts.</param>
-        /// <returns></returns>
-        private string CreateDirectory(string baseDirectory, IEnumerable<string> subParts)
-        {
-            var subDirectory = baseDirectory;
-            foreach (var subPart in subParts)
-            {
-                subDirectory = Path.Combine(subDirectory, subPart);
-                CreateDirectory(subDirectory);
-            }
-            return subDirectory;
-        }
-
-        /// <summary>
-        /// Creates the file.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <param name="resourceStream">The resource stream.</param>
-        private void CreateFile(string filePath, Stream resourceStream)
-        {
-            if (File.Exists(filePath))
-                return;
-            try
-            {
-                using (var fileStream = File.Create(filePath))
-                    resourceStream.CopyTo(fileStream);
-                _dispose.Add(delegate
-                {
-                    try
-                    {
-                        File.Delete(filePath);
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                    }
-                });
-            }
-            // on some parallel operations, the File.Exist is not enough
-            catch (IOException)
-            { }
         }
     }
 }
