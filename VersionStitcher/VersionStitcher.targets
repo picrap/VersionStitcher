@@ -4,8 +4,6 @@
 	<Target Name="VersionStitcherTarget" AfterTargets="CoreCompile">
 		<PropertyGroup>
 			<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\net48\VersionStitcher.exe"</VersionStitcherTool>
-			<!--<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">"$(MSBuildThisFileDirectory)..\tools\net5.0\VersionStitcher.exe"</VersionStitcherTool>
-			<VersionStitcherTool Condition="'$(TargetFramework)' == 'net6.0'">"$(MSBuildThisFileDirectory)..\tools\$(TargetFramework)\VersionStitcher.exe"</VersionStitcherTool>-->
 			<ShortTargetFramework>$([System.String]::Copy($(TargetFramework)).Split('-')[0])</ShortTargetFramework>
 			<VersionStitcherTool Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">"dotnet $(MSBuildThisFileDirectory)..\tools\$(ShortTargetFramework)\VersionStitcher.dll"</VersionStitcherTool>
 		</PropertyGroup>
